@@ -1,4 +1,4 @@
-# HW4
+# HW4.
 
 1. You should fork this repository.
 
