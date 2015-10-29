@@ -72,22 +72,26 @@ $username = $config['db_user'];
 $password = $config['db_password'];
 $dbname = $config['db_name'];
 
-phpinfo();
-$sql = "CREATE TABLE MyGuests (
+
+$sql = "CREATE TABLE Peoples (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(30) NOT NULL,
-    lastname VARCHAR(30) NOT NULL,
-    email VARCHAR(50),
-    reg_date TIMESTAMP
+    lastname VARCHAR(30) NOT NULL
     )";
+$sql3 = "CREATE TABLE Devices (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    brand VARCHAR(30) NOT NULL,
+    model VARCHAR(30) NOT NULL,
+    typedev VARCHAR(30) NOT NULL,
+    numberphone VARCHAR(30) NOT NULL
+    )";
+$sql2 = "DROP TABLE MyGuests";
 try
 {
-    $db = new PDO("mssql:host=$servername;dbname=$dbname", $username, $password);
+    $db = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-
-
     $db->exec($sql);
+    $db->exec($sql3);
     echo "Table MyGuests created successfully";
 }
 catch(PDOException $e)
