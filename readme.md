@@ -1,4 +1,11 @@
 # HW4
+installation:
+
+1. Rename /config/DBconfig-dist.php -> /config/DBconfig.php
+
+2. Run "composer install"
+
+
 
 1. You should fork this repository.
 

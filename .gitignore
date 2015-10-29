@@ -1,1 +1,6 @@
+#PhpStorm files
+.idea
+#composer dir
 /vendor
+#config files
+/config/DBconfig.php
