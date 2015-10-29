@@ -5,20 +5,12 @@ namespace Entity;
 
 class MobileTelephone extends Telephones
 {
-    private $nameDevice;
-    private $brandDevice;
-    private $numberPhone;
     private $imeiPhone;
-    private $idTelephone;
-    private $typeTelephone;
+    protected $typeTelephone;
 
     public function __construct()
     {
-        $this->nameDevice = 'Some Telephone';
-        $this->brandDevice = 'Some Brand';
-        $this->numberPhone = '+123456789';
-        $this->typeTelephone = 'mobile';
-        $this->idTelephone += 1;
+        $this->typeTelephone = 'Mobile Telephone';
     }
 
     /**

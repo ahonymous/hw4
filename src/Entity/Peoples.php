@@ -5,46 +5,46 @@ namespace Entity;
 
 class Peoples
 {
-    private $firstNamePeople;
-    private $secondNamePeople;
+    private $firstName;
+    private $secondName;
     private $idPeople;
 
     /**
      * @return mixed
      */
-    protected function getFirstNamePeople()
+    public function getFirstName()
     {
-        return $this->firstNamePeople;
+        return $this->firstName;
     }
 
     /**
-     * @param $firstNamePeople
+     * @param $firstName
      */
-    protected function setFirstNamePeople($firstNamePeople)
+    public function setFirstName($firstName)
     {
-        $this->firstNamePeople = $firstNamePeople;
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getSecondNamePeople()
-    {
-        return $this->secondNamePeople;
-    }
-
-    /**
-     * @param $secondNamePeople
-     */
-    protected function setSecondNamePeople($secondNamePeople)
-    {
-        $this->secondNamePeople = $secondNamePeople;
+        $this->firstName = $firstName;
     }
 
     /**
      * @return mixed
      */
-    protected function getIdPeople()
+    public function getSecondName()
+    {
+        return $this->secondName;
+    }
+
+    /**
+     * @param $secondName
+     */
+    public function setSecondName($secondName)
+    {
+        $this->secondName = $secondName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->idPeople;
     }
@@ -52,7 +52,7 @@ class Peoples
     /**
      * @param $idPeople
      */
-    protected function setIdPeople($idPeople)
+    public function setId($idPeople)
     {
         $this->idPeople = $idPeople;
     }

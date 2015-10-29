@@ -5,9 +5,10 @@ namespace Entity;
 
 abstract class AbstractDevices {
 
-    abstract public function getModelDevice();
-    abstract public function setModelDevice($nameDevice);
-    abstract public function getBrandDevice();
-    abstract public function setBrandDevice($brandDevice);
-    abstract public function moveToMas($mas, $object);
+    abstract public function getModel();
+    abstract public function setModel($nameDevice);
+    abstract public function getBrand();
+    abstract public function setBrand($brandDevice);
+    abstract public function getId();
+    abstract public function setId($id);
 }

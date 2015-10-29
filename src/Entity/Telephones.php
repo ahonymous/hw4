@@ -5,21 +5,14 @@ namespace Entity;
 
 class Telephones extends Devices
 {
-    private $modelDevice;
-    private $brandDevice;
     private $numberPhone;
-    private $typeTelephone;
+    protected $typeTelephone;
     private $idTelephone;
 
     public function __construct()
     {
-        $this->modelDevice = 'Some Model';
-        $this->brandDevice = 'Some Brand';
-        $this->numberPhone = '+123456789';
         $this->typeTelephone = 'Home Telephone';
-        $this->idTelephone += 1;
     }
-
     /**
      * @return mixed
      */
@@ -39,7 +32,7 @@ class Telephones extends Devices
     /**
      * @return mixed
      */
-    public function getIdTelephone()
+    public function getId()
     {
         return $this->idTelephone;
     }
@@ -47,19 +40,8 @@ class Telephones extends Devices
     /**
      * @param $idTelephone
      */
-    public function setIdTelephone($idTelephone)
+    public function setId($idTelephone)
     {
         $this->idTelephone = $idTelephone;
-    }
-
-    public function moveToMas($mas, $object){
-        $mas += array(
-            'id_dev'    => $object->idTelephone,
-            'brand'     => $object->brandDevice,
-            'model'     => $object->modelDevice,
-            'num_phone' => $object->numberPhone,
-            'type'      => $object->typeTelephone
-            );
-        return $mas;
     }
 }

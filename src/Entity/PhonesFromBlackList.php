@@ -3,7 +3,7 @@
 namespace Entity;
 
 
-class BlackListPhones
+class PhonesFromBlackList
 {
     private $idPhone;
     private $idPeople;
@@ -11,7 +11,7 @@ class BlackListPhones
     /**
      * @return mixed
      */
-    protected function getIdTelephone()
+    public function getIdTelephone()
     {
         return $this->idPhone;
     }
@@ -19,7 +19,7 @@ class BlackListPhones
     /**
      * @param $idPhone
      */
-    protected function setIdTelephone($idPhone)
+    public function setIdTelephone($idPhone)
     {
         $this->idPhone = $idPhone;
     }
@@ -27,7 +27,7 @@ class BlackListPhones
     /**
      * @return mixed
      */
-    protected function getIdPeople()
+    public function getIdPeople()
     {
         return $this->idPeople;
     }
@@ -35,8 +35,8 @@ class BlackListPhones
     /**
      * @param $idPeople
      */
-    protected function setIdPeople($idPeople)
+    public function setIdPeople($idPeople)
     {
-        $this->idPhone = $idPeople;
+        $this->idPeople = $idPeople;
     }
 }

@@ -5,38 +5,46 @@ namespace Entity;
 
 class Devices extends AbstractDevices{
 
-    private $nameDevice;
+    private $modelDevice;
     private $brandDevice;
+    private $id;
 
     /**
      * @return mixed
      */
-    public function getModelDevice(){
-        return $this->nameDevice;
+    public function getModel(){
+        return $this->modelDevice;
     }
 
     /**
-     * @param $nameDevice
+     * @param $modelDevice
      */
-    public function setModelDevice($nameDevice)
+    public function setModel($modelDevice)
     {
-        $this->nameDevice = $nameDevice;
+        $this->modelDevice = $modelDevice;
     }
 
     /**
      * @return mixed
      */
-    public function getBrandDevice(){
+    public function getBrand(){
         return $this->brandDevice;
     }
 
     /**
      * @param $brandDevice
      */
-    public function setBrandDevice($brandDevice)
+    public function setBrand($brandDevice)
     {
         $this->brandDevice = $brandDevice;
     }
 
-    public function moveToMas($mas, $object){}
+    public function getId(){
+        return $this->brandDevice;
+    }
+
+    public function setID($id)
+    {
+        $this->id = $id;
+    }
 }
