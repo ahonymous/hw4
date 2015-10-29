@@ -8,7 +8,6 @@
 
 namespace Layer\Manager;
 
-use Entity\Customer as Customer;
 
 class CustomerManager extends AbstractManager
 {
