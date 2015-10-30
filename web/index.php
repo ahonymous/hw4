@@ -7,7 +7,7 @@ use \Layer\Connector\DataBaseConnector as DBConnector;
 
 $connector = DBConnector::connect($config['db_name'], $config['db_user'], $config['db_password']);
 
-$controllerName = isset($_GET['controller']) ? $_GET['controller'] : 'customers';
+$controllerName = isset($_GET['controller']) ? $_GET['controller'] : 'books';
 $controllerName = ucfirst($controllerName) . 'Controller';
 $controllerName = 'Controllers\\' . $controllerName;
 
