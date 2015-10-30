@@ -8,6 +8,7 @@
 
 namespace Controllers;
 
+use Entity\Customer;
 use Layer\Manager\CustomerManager;
 
 class CustomersController
@@ -29,5 +30,22 @@ class CustomersController
     {
         $customersData = $this->manager->findAll();
         return $this->twig->render('customers.html.twig', ['customers' => $customersData]);
+    }
+
+    public function newAction()
+    {
+        if (isset($_POST['first_name'])) {
+            $customer = new Customer($_POST['first_name'], $_POST['last_name'], $_POST['email']);
+            $this->manager->insert($customer);
+            
+            return $this->indexAction();
+        }
+        return $this->twig->render('customers_form.html.twig',
+            [
+                'first_name' => '',
+                'last_name' => '',
+                'email' => '',
+            ]
+        );
     }
 }
