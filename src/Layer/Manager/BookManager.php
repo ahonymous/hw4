@@ -39,7 +39,7 @@ class BookManager extends AbstractManager
                 'isbn' => $result['isbn'],
                 'author' => $result['author'],
                 'price' => $result['price'],
-                'publishing_house' => $result['publishing_house']
+                'publishingHouse' => $result['publishing_house']
             ];
         }
         return $results;
@@ -68,7 +68,7 @@ class BookManager extends AbstractManager
 
     public function update($id, $entity)
     {
-        $statement = $this->connector->prepare('UPDATE customers SET title = :title, isbn = :isbn, author = :author, publishing_house = :publishingHouse, price = :price WHERE id = :id');
+        $statement = $this->connector->prepare('UPDATE books SET title = :title, isbn = :isbn, author = :author, publishing_house = :publishingHouse, price = :price WHERE id = :id');
         $statement->bindValue(':title', $entity->getTitle());
         $statement->bindValue(':isbn', $entity->getIsbn());
         $statement->bindValue(':author', $entity->getAuthor());
