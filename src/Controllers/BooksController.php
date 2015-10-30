@@ -31,4 +31,30 @@ class BooksController
         $booksData = $this->manager->findAll();
         return $this->twig->render('books.html.twig', ['books' => $booksData]);
     }
+
+    public function newAction()
+    {
+        if (isset($_POST['title'])) {
+
+            $book = new Book();
+            $book->setTitle($_POST['title']);
+            $book->setAuthor($_POST['author']);
+            $book->setIsbn($_POST['isbn']);
+            $book->setPublishingHouse($_POST['publishing_house']);
+            $book->setPrice($_POST['price']);
+
+            $this->manager->insert($book);
+
+            return $this->indexAction();
+        }
+        return $this->twig->render('books_form.html.twig',
+            [
+                'title' => '',
+                'author' => '',
+                'isbn' => '',
+                'publishing_house' => '',
+                'price' => '',
+            ]
+        );
+    }
 }
