@@ -6,6 +6,8 @@ use Entity\Telephones;
 use Entity\MobileTelephone;
 use Entity\Peoples;
 use Entity\PhonesFromBlackList;
+use Layer\Connector\MyConnect;
+use Layer\Manager\ManagerPeoples;
 
 $telephones = [];
 $mobileTelephones = [];
@@ -66,13 +68,13 @@ $itemBlackList = new PhonesFromBlackList();
 $itemBlackList->setIdTelephone($mobTel2->getId());
 $itemBlackList->setIdPeople($people->getId());
 $blackList[] = $itemBlackList;
-
+/*
 $servername = $config['host'];
 $username = $config['db_user'];
 $password = $config['db_password'];
 $dbname = $config['db_name'];
 
-
+$sql2 = "DROP TABLE Devices";
 $sql = "CREATE TABLE Peoples (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(30) NOT NULL,
@@ -85,7 +87,7 @@ $sql3 = "CREATE TABLE Devices (
     typedev VARCHAR(30) NOT NULL,
     numberphone VARCHAR(30) NOT NULL
     )";
-$sql2 = "DROP TABLE MyGuests";
+
 try
 {
     $db = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -93,6 +95,7 @@ try
     $db->exec($sql);
     $db->exec($sql3);
     echo "Table MyGuests created successfully";
+    $man->createTable($con, $sql);
 }
 catch(PDOException $e)
 {
@@ -100,4 +103,18 @@ catch(PDOException $e)
 }
 
 $db = null;
+*/
 
+$connect1 = new MyConnect();
+$con = $connect1->connect($config['host'],$config['db_user'],$config['db_password'],$config['db_name']);
+$man = new ManagerPeoples($con);
+try
+{
+    $man->insert($people3);
+}
+catch(PDOException $e)
+{
+    echo "<br>" . $e->getMessage();
+}
+
+$db = null;

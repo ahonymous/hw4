@@ -9,6 +9,20 @@ namespace Layer\Manager;
 interface ManagerInterface
 {
     /**
+     * @param $entity
+     * @param $scl
+     * @return mixed
+     */
+    public function createTable($entity, $scl);
+
+    /**
+     * @param $entity
+     * @param $scl
+     * @return mixed
+     */
+    public function dropTable($entity, $scl);
+
+    /**
      * Insert new entity data to the DB
      * @param mixed $entity
      * @return mixed

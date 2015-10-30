@@ -12,9 +12,10 @@ interface ConnectorInterface
      * @param $host
      * @param $user
      * @param $password
+     * @param $db
      * @return mixed
      */
-    public function connect($host, $user, $password);
+    public function connect($host, $user, $password, $db);
 
     /**
      * @param $db
