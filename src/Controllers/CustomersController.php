@@ -67,4 +67,20 @@ class CustomersController
             ]
         );
     }
+
+    public function deleteAction()
+    {
+        if (isset($_POST['id'])) {
+            $this->manager->remove((int)$_POST['id']);
+            return $this->indexAction();
+        }
+        $customersData = $this->manager->find((int) $_GET['id'])[0];
+        return $this->twig->render('customers_delete.html.twig',
+            [
+                'first_name' => $customersData['firstName'],
+                'last_name' => $customersData['lastName'],
+                'customer_id' => $_GET['id']
+            ]
+            );
+    }
 }
