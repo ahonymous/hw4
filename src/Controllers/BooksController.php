@@ -85,4 +85,20 @@ class BooksController
             ]
         );
     }
+
+    public function deleteAction()
+    {
+        if (isset($_POST['id'])) {
+            $this->manager->remove((int)$_POST['id']);
+            return $this->indexAction();
+        }
+        $booksData = $this->manager->find((int) $_GET['id'])[0];
+        return $this->twig->render('books_delete.html.twig',
+            [
+                'title' => $booksData['title'],
+                'author' => $booksData['author'],
+                'book_id' => $_GET['id']
+            ]
+        );
+    }
 }
