@@ -9,7 +9,7 @@
 namespace Layer\Manager;
 
 
-class GroupManager extends AbstractManager
+class Manager extends AbstractManager
 {
 
     private $connection;
@@ -20,16 +20,17 @@ class GroupManager extends AbstractManager
     }
     /**
      * Insert new entity data to the DB
-     * @param mixed $group
+     * @param mixed $entity
      * @return mixed
      */
-    public function insert($group)
+    public function insert($entity)
     {
         $this->connection->query(
-            "INSERT INTO `group` (name, size) ".
-            "VALUES ('".$group->getName()."', ".$group->getSize().")"
+            "INSERT INTO `".$entity->getEntityName()."` ".
+            "(".implode(', ', $entity->getKeys()).") ".
+            "VALUES (".implode(', ', $entity->getValues()).")"
         );
-        $group->setId($this->connection->lastInsertId());
+        $entity->setId($this->connection->lastInsertId());
     }
 
     /**
@@ -40,7 +41,7 @@ class GroupManager extends AbstractManager
     public function update($entity)
     {
         $this->connection->query(
-            "UPDATE `group` SET ".
+            "UPDATE `".$entity->getEntityName()."` SET ".
             "`name`='".$entity->getName()."', `size`=".$entity->getSize().
             " WHERE `id`=".$entity->getId()
         );
@@ -54,23 +55,23 @@ class GroupManager extends AbstractManager
     public function remove($entity)
     {
         $this->connection->query(
-            "DELETE FROM `group` WHERE `id`=".$entity->getId()
+            "DELETE FROM `".$entity->getEntityName()."` WHERE `id`=".$entity->getId()
         );
     }
 
     /**
      * Search entity data in the DB by Id
-     * @param $entityName
      * @param $id
+     * @param $entityName
      * @return mixed
      */
     public function find($entityName, $id)
     {
         $result = $this->connection->query(
-            "SELECT * FROM `group` WHERE `id`=".$id." LIMIT 1"
+            "SELECT * FROM `".$entityName."` WHERE `id`=".$id." LIMIT 1"
         );
         foreach($result as $row) {
-            echo $row[0];
+            echo json_encode($row['name']);
         }
 //        $group = new Group($groupResult['name'], $groupResult['size']);
 //        $group->setId($groupResult['id']);
@@ -84,7 +85,9 @@ class GroupManager extends AbstractManager
      */
     public function findAll($entityName)
     {
-        // TODO: Implement findAll() method.
+//        $result = $this->connection->query(
+//            "SELECT * FROM `".$entity->getEntityName()."` WHERE `id`=".$id." LIMIT 1"
+//        );
     }
 
     /**

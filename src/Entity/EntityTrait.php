@@ -70,4 +70,29 @@ trait EntityTrait
     {
         $this->deletedAt = $deletedAt;
     }
+
+    /**
+     * @return array
+     */
+    function getKeys() {
+        $keys = [];
+        foreach($this as $key => $value) {
+            if ($value) {
+                array_push($keys, "`".$key."`");
+            }
+        }
+        return $keys;
+    }
+    /**
+     * @return array
+     */
+    function getValues() {
+        $values = [];
+        foreach($this as $key => $value) {
+            if ($value) {
+                array_push($values, "'".$value."'");
+            }
+        }
+        return $values;
+    }
 }

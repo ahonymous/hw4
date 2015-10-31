@@ -9,7 +9,7 @@
 namespace Entity;
 
 
-class Group
+class Group extends Entity
 {
     private $id;
     private $name;
@@ -17,7 +17,8 @@ class Group
 
     use EntityTrait;
 
-    public function __construct($name, $size) {
+    public function __construct($entityName, $name, $size) {
+        parent::__construct($entityName);
         $this->name = $name;
         $this->size = $size;
     }

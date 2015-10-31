@@ -12,6 +12,7 @@ use Layer\Connector\Connector;
 abstract class AbstractManager implements ManagerInterface
 {
     private $connection;
+    private $connector;
 
     public function __construct() {
         $this->connector = new Connector();
@@ -31,11 +32,8 @@ abstract class AbstractManager implements ManagerInterface
         return $this->connection;
     }
 
-    /**
-     * @param mixed $connection
-     */
-    public function setConnection($connection)
+    public function closeConnection()
     {
-        $this->connection = $connection;
-    }
+        $this->connector->connectClose($this->connection);
+   }
 }

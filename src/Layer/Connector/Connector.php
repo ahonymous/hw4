@@ -9,9 +9,7 @@
 namespace Layer\Connector;
 
 
-class Connector implements ConnectorInterface
-{
-
+class Connector implements ConnectorInterface {
     /**
      * @param $host
      * @param $user

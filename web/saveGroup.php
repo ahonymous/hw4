@@ -10,11 +10,11 @@
 ini_set('display_errors', 'on');
 require '../config/autoload.php';
 use Entity\Group;
-use Layer\Manager\GroupManager;
+use Layer\Manager\Manager;
 
-$groupManager = new GroupManager();
+$groupManager = new Manager();
 if (isset($_POST["submit"])) {
-    $group = new Group($_POST["name"], $_POST["size"]);
+    $group = new Group('group', $_POST["name"], $_POST["size"]);
     $groupManager->insert($group);
 }
 echo "<h1 style='color: green'>Group was successfully added!</h1>";
