@@ -45,10 +45,13 @@ class CustomerManager extends AbstractManager
 
     public function insert($entity)
     {
-        $statement = $this->connector->prepare('INSERT INTO customers (first_name, last_name, email) VALUES(:firstName, :lastName, :email)');
+        parent::insert($entity);
+
+        $statement = $this->connector->prepare('INSERT INTO customers (first_name, last_name, email, created_at) VALUES(:firstName, :lastName, :email, :createdAt)');
         $statement->bindValue(':firstName', $entity->getFirstName());
         $statement->bindValue(':lastName', $entity->getLastName());
         $statement->bindValue(':email', $entity->getEmail());
+        $statement->bindValue(':createdAt', $entity->getCreatedAt());
 
         return $statement->execute();
     }
@@ -64,11 +67,14 @@ class CustomerManager extends AbstractManager
 
     public function update($id, $entity)
     {
-        $statement = $this->connector->prepare('UPDATE customers SET first_name = :firstName, last_name = :lastName, email = :email WHERE id = :id');
+        parent::update($id, $entity);
+
+        $statement = $this->connector->prepare('UPDATE customers SET first_name = :firstName, last_name = :lastName, email = :email, updated_at = :updatedAt WHERE id = :id');
         $statement->bindValue(':firstName', $entity->getFirstName(), \PDO::PARAM_STR);
         $statement->bindValue(':lastName', $entity->getLastName(), \PDO::PARAM_STR);
         $statement->bindValue(':email', $entity->getEmail(), \PDO::PARAM_STR);
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->bindValue(':updatedAt', $entity->getUpdatedAt());
 
         return $statement->execute();
     }

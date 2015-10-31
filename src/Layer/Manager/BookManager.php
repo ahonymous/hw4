@@ -47,12 +47,17 @@ class BookManager extends AbstractManager
 
     public function insert($entity)
     {
-        $statement = $this->connector->prepare('INSERT INTO books (title, isbn, author, publishing_house, price) VALUES(:title, :isbn, :author, :publishingHouse, :price)');
+        //$currentDate = new \DateTime();
+        //$entity->setCreatedAt($currentDate);
+        parent::insert($entity);
+
+        $statement = $this->connector->prepare('INSERT INTO books (title, isbn, author, publishing_house, price, created_at) VALUES(:title, :isbn, :author, :publishingHouse, :price, :createdAt)');
         $statement->bindValue(':title', $entity->getTitle());
         $statement->bindValue(':isbn', $entity->getIsbn());
         $statement->bindValue(':author', $entity->getAuthor());
         $statement->bindValue(':publishingHouse', $entity->getPublishingHouse());
         $statement->bindValue(':price', $entity->getPrice());
+        $statement->bindValue(':createdAt', $entity->getCreatedAt());
 
         return $statement->execute();
     }
@@ -68,12 +73,15 @@ class BookManager extends AbstractManager
 
     public function update($id, $entity)
     {
-        $statement = $this->connector->prepare('UPDATE books SET title = :title, isbn = :isbn, author = :author, publishing_house = :publishingHouse, price = :price WHERE id = :id');
+        parent::update($id, $entity);
+
+        $statement = $this->connector->prepare('UPDATE books SET title = :title, isbn = :isbn, author = :author, publishing_house = :publishingHouse, price = :price, updated_at = :updatedAt WHERE id = :id');
         $statement->bindValue(':title', $entity->getTitle());
         $statement->bindValue(':isbn', $entity->getIsbn());
         $statement->bindValue(':author', $entity->getAuthor());
         $statement->bindValue(':publishingHouse', $entity->getPublishingHouse());
         $statement->bindValue(':price', $entity->getPrice());
+        $statement->bindValue(':updatedAt', $entity->getUpdatedAt());
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
 
         return $statement->execute();
