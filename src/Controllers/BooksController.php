@@ -68,11 +68,11 @@ class BooksController
             $book->setPublishingHouse($_POST['publishing_house']);
             $book->setPrice($_POST['price']);
 
-            $this->manager->update((int) $_GET['id'], $book);
+            $this->manager->update((int)$_GET['id'], $book);
 
             return $this->indexAction();
         }
-        $booksData = $this->manager->find((int) $_GET['id'])[0];
+        $booksData = $this->manager->find((int)$_GET['id'])[0];
 
         return $this->twig->render('books_edit.html.twig',
             [
@@ -92,7 +92,7 @@ class BooksController
             $this->manager->remove((int)$_POST['id']);
             return $this->indexAction();
         }
-        $booksData = $this->manager->find((int) $_GET['id'])[0];
+        $booksData = $this->manager->find((int)$_GET['id'])[0];
         return $this->twig->render('books_delete.html.twig',
             [
                 'title' => $booksData['title'],

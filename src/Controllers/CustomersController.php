@@ -53,11 +53,11 @@ class CustomersController
     {
         if (isset($_POST['first_name'])) {
             $customer = new Customer($_POST['first_name'], $_POST['last_name'], $_POST['email']);
-            $this->manager->update((int) $_GET['id'], $customer);
+            $this->manager->update((int)$_GET['id'], $customer);
 
             return $this->indexAction();
         }
-        $customersData = $this->manager->find((int) $_GET['id'])[0];
+        $customersData = $this->manager->find((int)$_GET['id'])[0];
         return $this->twig->render('customer_edit.html.twig',
             [
                 'first_name' => $customersData['firstName'],
@@ -74,13 +74,13 @@ class CustomersController
             $this->manager->remove((int)$_POST['id']);
             return $this->indexAction();
         }
-        $customersData = $this->manager->find((int) $_GET['id'])[0];
+        $customersData = $this->manager->find((int)$_GET['id'])[0];
         return $this->twig->render('customers_delete.html.twig',
             [
                 'first_name' => $customersData['firstName'],
                 'last_name' => $customersData['lastName'],
                 'customer_id' => $_GET['id']
             ]
-            );
+        );
     }
 }

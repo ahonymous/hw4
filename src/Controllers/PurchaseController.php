@@ -9,6 +9,7 @@
 namespace Controllers;
 
 use Layer\Manager\PurchaseManager;
+
 //use Views\Renderer;
 
 class PurchaseController
@@ -29,6 +30,6 @@ class PurchaseController
     public function indexAction()
     {
         $resultsData = $this->manager->getAllPurchases();
-        return $this->twig->render('purchases.html.twig', ['results' => $resultsData ]);
+        return $this->twig->render('purchases.html.twig', ['results' => $resultsData]);
     }
 }
