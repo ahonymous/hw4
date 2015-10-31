@@ -8,6 +8,7 @@ namespace Entity;
  */
 trait EntityTrait
 {
+
     /**
      * @var \DateTime
      */
@@ -72,13 +73,14 @@ trait EntityTrait
     }
 
     /**
+     * @param $cleanKeys
      * @return array
      */
-    function getKeys() {
+    function getKeys($cleanKeys) {
         $keys = [];
         foreach($this as $key => $value) {
             if ($value) {
-                array_push($keys, "`".$key."`");
+                array_push($keys, $cleanKeys ? $key : "`".$key."`");
             }
         }
         return $keys;
@@ -94,5 +96,10 @@ trait EntityTrait
             }
         }
         return $values;
+    }
+
+    public function __get($property)
+    {
+        return $this->$property;
     }
 }

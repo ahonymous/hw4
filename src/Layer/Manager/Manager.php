@@ -40,9 +40,14 @@ class Manager extends AbstractManager
      */
     public function update($entity)
     {
+        $setStrings = [];
+        foreach($entity->getKeys(true) as $key) {
+            array_push($setStrings, "`".$key."`='".$entity->__get($key)."'");
+        }
+        
         $this->connection->query(
             "UPDATE `".$entity->getEntityName()."` SET ".
-            "`name`='".$entity->getName()."', `size`=".$entity->getSize().
+            implode(", ", $setStrings).
             " WHERE `id`=".$entity->getId()
         );
     }
@@ -70,11 +75,12 @@ class Manager extends AbstractManager
         $result = $this->connection->query(
             "SELECT * FROM `".$entityName."` WHERE `id`=".$id." LIMIT 1"
         );
-        foreach($result as $row) {
-            foreach($row as $key => $value) {
-                if (!is_int($key)) echo "<b>".$key."</b>: ".$value.", ";
-            }
-        }
+        return $result;
+//        foreach($result as $row) {
+//            foreach($row as $key => $value) {
+//                if (!is_int($key)) echo "<b>".$key."</b>: ".$value.", ";
+//            }
+//        }
     }
 
     /**
@@ -87,7 +93,7 @@ class Manager extends AbstractManager
         $result = $this->connection->query(
             "SELECT * FROM `".$entityName
         );
-        return $result;
+        return $result ? $result : [];
     }
 
     /**

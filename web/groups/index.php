@@ -6,8 +6,8 @@
 </head>
 <body>
 <h2>Groups</h2>
-<?php include './showGroups.php' ?>
-<form action=./saveGroup.php method="post">
+<?php include 'showGroups.php' ?>
+<form action=saveGroup.php method="post">
     <fieldset>
         <legend>Create group</legend>
         <div>
@@ -23,7 +23,7 @@
         <input type="submit" name="submit" />
     </fieldset>
 </form>
-<form action=./saveGroup.php method="post">
+<form action=saveGroup.php method="post">
     <fieldset>
         <legend>Update group</legend>
         <div>
@@ -47,7 +47,7 @@
         <input type="submit" name="submit" />
     </fieldset>
 </form>
-<form action=./saveGroup.php method="post">
+<form action=saveGroup.php method="post">
     <fieldset>
         <legend>Delete group</legend>
         <div>

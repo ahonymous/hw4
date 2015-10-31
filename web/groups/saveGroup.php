@@ -8,7 +8,7 @@
 
 
 ini_set('display_errors', 'on');
-require '../config/autoload.php';
+require '../../config/autoload.php';
 use Entity\Group;
 use Layer\Manager\Manager;
 
@@ -40,4 +40,4 @@ if (isset($_POST['submit']))
     }
     echo "!</h1>";
 }
-echo "<p><a href='index.php'>Back</a></p>";
+echo "<p><a href='./index.php'>Back</a></p>";
