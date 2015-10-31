@@ -11,6 +11,8 @@ namespace Entity;
 
 class Book extends AbstractProduct
 {
+    use EntityTrait;
+
     protected $isbn;
     protected $author;
     protected $publishingHouse;

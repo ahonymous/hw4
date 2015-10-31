@@ -11,6 +11,8 @@ namespace Entity;
 
 class Customer
 {
+    use EntityTrait;
+
     protected $firstName;
     protected $lastName;
     protected $email;
