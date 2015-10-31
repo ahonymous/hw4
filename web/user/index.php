@@ -1,3 +1,25 @@
+<?php
+
+    require_once __DIR__.'/../../vendor/autoload.php';
+
+    use Entity\EntityManager;
+
+    if (isset($_GET['delete'])){
+
+        $entity = array(
+            'entity' => 'users',
+            'id' => $_GET['delete']
+        );
+
+        $remove_user = new EntityManager();
+        $remove_user->remove($entity);
+        header("Location: index.php");
+        exit;
+
+    }
+
+?>
+
 <html>
     <head>
         <title>User</title>
@@ -20,7 +42,10 @@
 
         <div class="container">
 
-            <a href="AddUser.php" class="btn btn-default">Add User</a>
+            <a href="/../user/" class="btn btn-default">List Users</a>
+            <a href="/../user/AddUser.php" class="btn btn-default">Add User</a>
+            <a href="/../products/index.php" class="btn btn-default">List Products</a>
+            <a href="/../products/AddProduct.php" class="btn btn-default">Add Product</a>
 
             <table class="table">
                 <thead>
@@ -29,14 +54,26 @@
                     <th>Options</th>
                 </thead>
                 <tbody>
+
+                <?php
+
+                    $user = new EntityManager();
+                    $list_users = $user->findAll('users');
+
+                    foreach ($list_users as $user):
+                ?>
+
                     <tr>
-                        <td>1</td>
-                        <td>Roma</td>
+                        <td><?php print $user['id']; ?></td>
+                        <td><?php print $user['name']; ?></td>
                         <td>
-                            <a href="AddUser.php" class="btn btn-default">Edit</a>
-                            <a href="AddUser.php" class="btn btn-danger">Delete</a>
+                            <a href="EditUser.php?id=<?php print $user['id']; ?>" class="btn btn-default">Edit</a>
+                            <a href="?delete=<?php print $user['id']; ?>" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
+
+                <?php endforeach; ?>
+
                 </tbody>
             </table>
         </div>

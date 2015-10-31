@@ -14,7 +14,7 @@ interface ConnectorInterface
      * @param $password
      * @return mixed
      */
-    public function connect($host, $db, $user, $password);
+    public function connect();
 
     /**
      * @param $db

@@ -4,6 +4,7 @@ namespace Entity;
 
 use Layer\Manager\AbstractManager;
 use Layer\Connector\ConnectorInterface;
+use PDO;
 
 /**
  * Class EntityManager
@@ -13,55 +14,14 @@ class EntityManager extends AbstractManager implements ConnectorInterface
 {
 
     /**
-     * @var
+     * @return PDO
      */
-    private $db_name;
-
-    /**
-     * @var
-     */
-    private $db_user;
-
-    /**
-     * @var
-     */
-    private $db_password;
-
-    /**
-     * @var
-     */
-    private $db_host;
-
-    /**
-     * @var
-     */
-    private $connection;
-
-    /**
-     * @param $params
-     */
-    public function __construct($params){
-
-        $this->db_name = $params['db_name'];
-        $this->db_user = $params['db_user'];
-        $this->db_host = $params['host'];
-        $this->db_password = $params['db_password'];
-
-    }
-
-    /**
-     * @param $host
-     * @param $db
-     * @param $user
-     * @param $password
-     * @return \PDO
-     */
-    public function connect($host, $db, $user, $password)
+    public function connect()
     {
-
+        require_once __DIR__ . '/../../config/config.php';
         try {
 
-            return $this->connection = new \PDO('mysql:host='.$host.';dbname='.$db.'', $user, $password);
+            return new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['db_name'] . '', $config['db_user'], $config['db_password']);
 
         } catch (\PDOException $e) {
 
@@ -69,7 +29,6 @@ class EntityManager extends AbstractManager implements ConnectorInterface
             die();
 
         }
-
     }
 
     /**
@@ -81,38 +40,106 @@ class EntityManager extends AbstractManager implements ConnectorInterface
         return $this->connection = null;
     }
 
-
+    /**
+     * @param mixed $entity
+     * @return \PDOStatement
+     */
     public function insert($entity)
     {
 
-        $connection = $this->connection;
-        $query = $connection->prepare("INSERT INTO 'users' (name) VALUE (?)");
-        $query->bindParam(1, 'Roma');
+        $table = $entity['entity'];
+        $name = $entity['name'];
+        $connection = $this->connect();
+        if ($table == 'products') {
+            $price = $entity['price'];
+            $query = $connection->prepare("INSERT INTO $table (name, price) VALUES (:name, :price)");
+            $query->bindParam(":name", $name, PDO::PARAM_STR);
+            $query->bindParam(":price", $price, PDO::PARAM_INT);
+        } else {
+            $query = $connection->prepare("INSERT INTO $table (name) VALUES (:name)");
+            $query->bindParam(":name", $name, PDO::PARAM_STR);
+        }
+
         $query->execute();
-        $connection = null;
 
         return $query;
 
     }
 
+    /**
+     * @param $entity
+     * @return \PDOStatement
+     */
     public function update($entity)
     {
-        // TODO: Implement update() method.
+        $table = $entity['entity'];
+        $name = $entity['name'];
+        $id = $entity['id'];
+        $connection = $this->connect();
+        if (isset($entity['price'])) {
+            $price = $entity['price'];
+            $sql = "UPDATE `$table` SET `name`=:name, `price`=:price WHERE id =" . $entity['id'];
+            $query = $connection->prepare($sql);
+            $query->bindValue(":name", $name, PDO::PARAM_STR);
+            $query->bindValue(":price", $price, PDO::PARAM_INT);
+
+        } else {
+            $sql = "UPDATE `$table` SET name=:name WHERE id =" . $entity['id'];
+            $query = $connection->prepare($sql);
+            $query->bindValue(":name", $name, PDO::PARAM_STR);
+        }
+
+        $query->execute();
+
+        return $query;
+
+
     }
 
+    /**
+     * @param $entity
+     * @return \PDOStatement
+     */
     public function remove($entity)
     {
-        // TODO: Implement remove() method.
+
+        $table = $entity['entity'];
+        $id = $entity['id'];
+        $connection = $this->connect();
+        $sql = "DELETE FROM `$table` WHERE `id`=" . $id;
+        $result = $connection->query($sql);
+
+        return $result;
+
     }
 
+    /**
+     * @param $entityName
+     * @param $id
+     * @return mixed
+     */
     public function find($entityName, $id)
     {
-        // TODO: Implement find() method.
+
+        $connection = $this->connect();
+        $query = $connection->query("SELECT * FROM $entityName WHERE id=$id");
+        $query->execute();
+
+        return $query->fetch();
     }
 
+    /**
+     * @param $entityName
+     * @return array
+     */
     public function findAll($entityName)
     {
-        // TODO: Implement findAll() method.
+
+        $connection = $this->connect();
+        $query = $connection->query("SELECT * FROM $entityName");
+
+        return $query->fetchAll();
+
     }
 
     public function findBy($entityName, $criteria = [])

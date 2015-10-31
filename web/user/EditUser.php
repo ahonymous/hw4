@@ -44,13 +44,21 @@
 
                 $user = array(
                     'entity' => 'users',
+                    'id' => $_GET['id'],
                     'name' => $_POST['name']
                 );
-
-                $user_insert = new EntityManager();
-                $user_insert->insert($user);
+                $user_update = new EntityManager();
+                $user_update->update($user);
                 header("Location: index.php");
                 exit;
+
+            }
+
+            if (isset($_GET['id'])){
+
+                $get_user = new EntityManager();
+                $user = $get_user->find('users', $_GET['id']);
+
             }
 
         ?>
@@ -58,10 +66,10 @@
         <form method="post">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+                <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="<?php print $user['name']; ?>">
             </div>
 
-            <button type="submit" class="btn btn-default">Add</button>
+            <button type="submit" class="btn btn-default">Edit</button>
         </form>
 
     </div>
