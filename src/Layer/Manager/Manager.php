@@ -71,11 +71,10 @@ class Manager extends AbstractManager
             "SELECT * FROM `".$entityName."` WHERE `id`=".$id." LIMIT 1"
         );
         foreach($result as $row) {
-            echo json_encode($row['name']);
+            foreach($row as $key => $value) {
+                if (!is_int($key)) echo "<b>".$key."</b>: ".$value.", ";
+            }
         }
-//        $group = new Group($groupResult['name'], $groupResult['size']);
-//        $group->setId($groupResult['id']);
-//        return $group;
     }
 
     /**
@@ -85,9 +84,16 @@ class Manager extends AbstractManager
      */
     public function findAll($entityName)
     {
-//        $result = $this->connection->query(
-//            "SELECT * FROM `".$entity->getEntityName()."` WHERE `id`=".$id." LIMIT 1"
-//        );
+        $result = $this->connection->query(
+            "SELECT * FROM `".$entityName
+        );
+        foreach($result as $row) {
+            echo "<p>";
+            foreach($row as $key => $value) {
+                if (!is_int($key)) echo "<b>".$key."</b>: ".$value." ";
+            }
+            echo "</p>";
+        }
     }
 
     /**

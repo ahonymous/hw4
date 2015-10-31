@@ -11,4 +11,4 @@ require '../config/autoload.php';
 use Layer\Manager\Manager;
 
 $groupManager = new Manager();
-//$groupManager->find('group', 15);
+//$groupManager->findAll('group');
