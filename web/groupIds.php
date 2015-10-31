@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: victor
  * Date: 31/10/15
- * Time: 13:46
+ * Time: 23:54
  */
 
 ini_set('display_errors', 'on');
@@ -12,9 +12,5 @@ use Layer\Manager\Manager;
 
 $groupManager = new Manager();
 foreach($groupManager->findAll('group') as $row) {
-    echo "<p>";
-    foreach($row as $key => $value) {
-        if (!is_int($key)) echo "<b>".$key."</b>: ".$value." ";
-    }
-    echo "</p>";
+    echo "<option>".$row['id']."</option>";
 }

@@ -87,13 +87,7 @@ class Manager extends AbstractManager
         $result = $this->connection->query(
             "SELECT * FROM `".$entityName
         );
-        foreach($result as $row) {
-            echo "<p>";
-            foreach($row as $key => $value) {
-                if (!is_int($key)) echo "<b>".$key."</b>: ".$value." ";
-            }
-            echo "</p>";
-        }
+        return $result;
     }
 
     /**
@@ -104,6 +98,9 @@ class Manager extends AbstractManager
      */
     public function findBy($entityName, $criteria = [])
     {
-        // TODO: Implement findBy() method.
+        $result = $this->connection->query(
+            "SELECT * FROM `".$entityName." WHERE ".implode(' ', $criteria)
+        );
+        return $result;
     }
 }
