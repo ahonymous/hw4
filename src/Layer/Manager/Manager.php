@@ -27,7 +27,7 @@ class Manager extends AbstractManager
     {
         $this->connection->query(
             "INSERT INTO `".$entity->getEntityName()."` ".
-            "(".implode(', ', $entity->getKeys()).") ".
+            "(".implode(', ', $entity->getKeys(false)).") ".
             "VALUES (".implode(', ', $entity->getValues()).")"
         );
         $entity->setId($this->connection->lastInsertId());
@@ -44,7 +44,7 @@ class Manager extends AbstractManager
         foreach($entity->getKeys(true) as $key) {
             array_push($setStrings, "`".$key."`='".$entity->__get($key)."'");
         }
-        
+
         $this->connection->query(
             "UPDATE `".$entity->getEntityName()."` SET ".
             implode(", ", $setStrings).
@@ -108,5 +108,13 @@ class Manager extends AbstractManager
             "SELECT * FROM `".$entityName." WHERE ".implode(' ', $criteria)
         );
         return $result;
+    }
+
+    /**
+     * @param $query
+     */
+    public function execute($query)
+    {
+        $this->connection->prepare($query)->execute();
     }
 }

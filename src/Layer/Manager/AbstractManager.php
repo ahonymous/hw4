@@ -35,5 +35,10 @@ abstract class AbstractManager implements ManagerInterface
     public function closeConnection()
     {
         $this->connector->connectClose($this->connection);
-   }
+    }
+
+    /**
+     * @param $query
+     */
+    public abstract function execute($query);
 }

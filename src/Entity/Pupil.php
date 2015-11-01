@@ -87,4 +87,21 @@ class Pupil extends Entity
     {
         $this->group_id = $group_id;
     }
+
+    /**
+     * @return string
+     */
+    public static function initScript()
+    {
+
+        return "CREATE TABLE `pupil` (".
+            "`id` int(11) NOT NULL AUTO_INCREMENT,".
+            "`name` varchar(15) NOT NULL,".
+            "`age` int(11) NOT NULL,".
+            "`group_id` int(11) NOT NULL,".
+            "PRIMARY KEY (`id`),".
+            "KEY `pupil_group_FK` (`group_id`),".
+            "CONSTRAINT `pupil_group_FK` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`)".
+        ") ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1";
+    }
 }

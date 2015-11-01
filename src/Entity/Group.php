@@ -71,4 +71,17 @@ class Group extends Entity
         $this->id = $id;
     }
 
+    /**
+     * @return string
+     */
+    public static function initScript()
+    {
+        return "CREATE TABLE `group` (".
+            "`id` int(11) NOT NULL AUTO_INCREMENT,".
+            "`size` int(11) NOT NULL,".
+            "`name` varchar(15) NOT NULL,".
+            "PRIMARY KEY (`id`),".
+            "UNIQUE KEY `unique_id` (`id`)".
+        ") ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1";
+    }
 }

@@ -9,7 +9,7 @@
 namespace Entity;
 
 
-class Entity
+abstract class Entity
 {
     private $entityName;
 
@@ -24,4 +24,9 @@ class Entity
     {
         return $this->entityName;
     }
+
+    /**
+     * @return string
+     */
+    public static abstract function initScript();
 }
