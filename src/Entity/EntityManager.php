@@ -13,23 +13,18 @@ use PDO;
 class EntityManager extends AbstractManager implements ConnectorInterface
 {
 
+    use EntityTrait;
+
     /**
      * @return PDO
      */
     public function connect()
     {
-        require_once __DIR__ . '/../../config/config.php';
-        try {
+        require __DIR__ . '/../../config/config.php';
 
-            return new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['db_name'] . '', $config['db_user'], $config['db_password']);
-
-        } catch (\PDOException $e) {
-
-            print "Error!: " . $e->getMessage() . "<br/>";
-            die();
-
-        }
+        return new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['db_name'] . '', $config['db_user'], $config['db_password']);
     }
+
 
     /**
      * @param $db
@@ -48,21 +43,26 @@ class EntityManager extends AbstractManager implements ConnectorInterface
     {
 
         $table = $entity['entity'];
-        $name = $entity['name'];
+
         $connection = $this->connect();
+
         if ($table == 'products') {
             $price = $entity['price'];
+            $name = $entity['name'];
             $query = $connection->prepare("INSERT INTO $table (name, price) VALUES (:name, :price)");
             $query->bindParam(":name", $name, PDO::PARAM_STR);
             $query->bindParam(":price", $price, PDO::PARAM_INT);
+        } elseif ($table == 'orders') {
+            $values = $entity['values'];
+            $query = $connection->prepare("INSERT INTO $table (user_id, product_id) VALUES $values");
         } else {
-            $query = $connection->prepare("INSERT INTO $table (name) VALUES (:name)");
+            $name = $entity['name'];
+            $query = $connection->prepare("INSERT INTO $table (user_name) VALUES (:name)");
             $query->bindParam(":name", $name, PDO::PARAM_STR);
         }
 
-        $query->execute();
-
-        return $query;
+        $connection = null;
+        return $query->execute();
 
     }
 
@@ -84,7 +84,7 @@ class EntityManager extends AbstractManager implements ConnectorInterface
             $query->bindValue(":price", $price, PDO::PARAM_INT);
 
         } else {
-            $sql = "UPDATE `$table` SET name=:name WHERE id =" . $entity['id'];
+            $sql = "UPDATE `$table` SET user_name=:name WHERE id =" . $entity['id'];
             $query = $connection->prepare($sql);
             $query->bindValue(":name", $name, PDO::PARAM_STR);
         }
@@ -136,7 +136,12 @@ class EntityManager extends AbstractManager implements ConnectorInterface
     {
 
         $connection = $this->connect();
-        $query = $connection->query("SELECT * FROM $entityName");
+
+        if ($entityName == 'orders'){
+            $query = $connection->query("SELECT O.id, U.user_name, P.name, P.price FROM $entityName AS O LEFT JOIN users AS U ON U.id = O.user_id LEFT JOIN products AS P ON P.id = O.product_id");
+        } else {
+            $query = $connection->query("SELECT * FROM $entityName");
+        }
 
         return $query->fetchAll();
 
@@ -144,8 +149,31 @@ class EntityManager extends AbstractManager implements ConnectorInterface
 
     public function findBy($entityName, $criteria = [])
     {
-        // TODO: Implement findBy() method.
+        $field = key($criteria);
+        if (isset($criteria[$field]) && isset($criteria[$field]) !== []){
+
+            if (gettype($criteria[$field]) == 'array'){
+                $value = implode(',', $criteria[$field]);
+            } else {
+                $value = $criteria['user_name'];
+            }
+
+
+
+            $connection = $this->connect();
+            $query = $connection->query("SELECT * FROM $entityName WHERE $field IN ($value)");
+
+            $query->execute();
+
+            return $query->fetchAll();
+
+        } else {
+
+            return false;
+
+        }
+
     }
 
-
 }
+

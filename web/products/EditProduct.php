@@ -33,10 +33,14 @@ use Entity\EntityManager;
 
 <div class="container">
 
-    <a href="/../user/" class="btn btn-default">List Users</a>
-    <a href="/../user/AddUser.php" class="btn btn-default">Add User</a>
-    <a href="/../products/index.php" class="btn btn-default">List Products</a>
-    <a href="/../products/AddProduct.php" class="btn btn-default">Add Product</a>
+    <div id="header">
+        <a href="/../shop/" class="btn btn-default">Shop</a>
+        <a href="/../user/" class="btn btn-default">Users</a>
+        <a href="/../user/AddUser.php" class="btn btn-default">Add User</a>
+        <a href="/../products/index.php" class="btn btn-default">Products</a>
+        <a href="/../products/AddProduct.php" class="btn btn-default">Add Product</a>
+        <a href="/../orders/index.php" class="btn btn-default">Orders</a>
+    </div>
 
     <?php
 

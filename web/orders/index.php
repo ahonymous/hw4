@@ -22,7 +22,7 @@ if (isset($_GET['delete'])){
 
 <html>
 <head>
-    <title>Products</title>
+    <title>Orders</title>
 
     <link rel="stylesheet" href="../css/style.css">
 
@@ -51,31 +51,33 @@ if (isset($_GET['delete'])){
         <a href="/../orders/index.php" class="btn btn-default">Orders</a>
     </div>
 
+
     <table class="table">
         <thead>
         <th>ID</th>
-        <th>Name</th>
+        <th>User</th>
+        <th>Product</th>
         <th>Price</th>
-        <th>Options</th>
         </thead>
         <tbody>
 
         <?php
 
-        $product = new EntityManager();
-        $list_products = $product->findAll('products');
+        $orders = new EntityManager();
+        $list_orders = $orders->findAll('orders');
+//
+//        echo "<pre>";
+//        var_dump($list_orders);
+//        echo "</pre>";
 
-        foreach ($list_products as $product):
+        foreach ($list_orders as $order):
             ?>
 
             <tr>
-                <td><?php print $product['id']; ?></td>
-                <td><?php print $product['name']; ?></td>
-                <td><?php print $product['price']; ?>$</td>
-                <td>
-                    <a href="EditProduct.php?id=<?php print $product['id']; ?>" class="btn btn-default">Edit</a>
-                    <a href="?delete=<?php print $product['id']; ?>" class="btn btn-danger">Delete</a>
-                </td>
+                <td><?php print $order['id']; ?></td>
+                <td><?php print $order['user_name']; ?></td>
+                <td><?php print $order['name']; ?></td>
+                <td><?php print $order['price']; ?>$</td>
             </tr>
 
         <?php endforeach; ?>
