@@ -6,7 +6,7 @@ namespace Layer\Manager;
  * Class AbstractManager
  * @package Layer\Manager
  */
-abstract class AbstractManager implements ManagerInterface
+class ResearcherManager implements ManagerInterface
 {
 
 }
