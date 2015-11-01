@@ -35,7 +35,6 @@ $mobTel->setNumberPhone('+380933579930');
 $mobTel->setModel('C6-01');
 $mobTel->setBrand('Nokia');
 $mobTel->setImei(325846975);
-$mobTel->setId(++$idDevice);
 $mobileTelephones[] = $mobTel;
 
 $mobTel2 = new MobileTelephone();
@@ -43,7 +42,6 @@ $mobTel2->setNumberPhone('+380937891500');
 $mobTel2->setModel('E-5');
 $mobTel2->setBrand('MSI');
 $mobTel2->setImei(4595856895);
-$mobTel2->setId(++$idDevice);
 $mobileTelephones[] = $mobTel2;
 
 $people = new Peoples();
@@ -87,22 +85,6 @@ $sql3 = "CREATE TABLE Devices (
     typedev VARCHAR(30) NOT NULL,
     numberphone VARCHAR(30) NOT NULL
     )";
-
-try
-{
-    $db = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $db->exec($sql);
-    $db->exec($sql3);
-    echo "Table MyGuests created successfully";
-    $man->createTable($con, $sql);
-}
-catch(PDOException $e)
-{
-    echo "<br>" . $e->getMessage();
-}
-
-$db = null;
 */
 
 $connect1 = new MyConnect();
@@ -110,7 +92,15 @@ $con = $connect1->connect($config['host'],$config['db_user'],$config['db_passwor
 $man = new ManagerPeoples($con);
 try
 {
-    $man->insert($people3);
+    /*$man->insert($people3);
+    $man->insert($people);
+    $man->insert($people2);
+    $man->update($people3);
+    $man->remove($people3);
+    var_dump($man->find('Peoples',1));
+    var_dump($man->findAll('Peoples'));*/
+    var_dump($man->findBy('Peoples',['firstname' ,'lastname']));
+
 }
 catch(PDOException $e)
 {
