@@ -10,10 +10,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Layer\\": "src/Layer/",
-            "Documents\\": "src/Documents/",
-            "Catalogs\\": "src/Catalogs/",
-            "Reports\\": "src/Reports/"
+            "Layer\\": "src/Layer/"
         }
     },
     "minimum-stability": "stable",
