@@ -14,7 +14,7 @@ use PDO;
 
 class Connector implements ConnectorInterface
 {
-    private $db;
+    public $db;
 
 
 
@@ -35,6 +35,7 @@ class Connector implements ConnectorInterface
             return $this->db;
         }
     }
+
 
     public function connectClose(){
         $this->db = null;
