@@ -4,18 +4,19 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Alex Moshta",
-            "email": "ahonymous@gmail.com"
+            "name": "Viktor Urbanas",
+            "email": "undefned@gmail.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Layer\\": "src/Layer/"
+            "Layer\\": "src/Layer/",
+            "Entity\\": "src/Entity/"
         }
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=5.6.0",
         "ext-mysqlnd": "*"
     }
 }

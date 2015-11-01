@@ -8,6 +8,7 @@ namespace Entity;
  */
 trait EntityTrait
 {
+
     /**
      * @var \DateTime
      */
@@ -69,5 +70,36 @@ trait EntityTrait
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
+    }
+
+    /**
+     * @param $cleanKeys
+     * @return array
+     */
+    function getKeys($cleanKeys) {
+        $keys = [];
+        foreach($this as $key => $value) {
+            if ($value && ! is_array($value)) {
+                array_push($keys, $cleanKeys ? $key : "`".$key."`");
+            }
+        }
+        return $keys;
+    }
+    /**
+     * @return array
+     */
+    function getValues() {
+        $values = [];
+        foreach($this as $key => $value) {
+            if ($value && ! is_array($value)) {
+                array_push($values, "'".$value."'");
+            }
+        }
+        return $values;
+    }
+
+    public function __get($property)
+    {
+        return $this->$property;
     }
 }
