@@ -20,7 +20,9 @@
                 Surname <input type="text" name="surname" required>
             </label>
         </div>
-        <div>
+        <ul>
+            <?php include 'groupNames.php' ?>
+        </ul>
         <input type="submit" name="submit" />
     </fieldset>
 </form>
@@ -45,6 +47,9 @@
                 Surname <input type="text" name="surname" required>
             </label>
         </div>
+        <ul>
+            <?php include 'groupNames.php' ?>
+        </ul>
         <input type="submit" name="submit" />
     </fieldset>
 </form>

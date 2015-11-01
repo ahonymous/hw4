@@ -24,7 +24,7 @@
             <label>
                 group
                 <select name="group_id">
-                    <?php include 'groupSelect.php' ?>
+                    <?php include 'groupNames.php' ?>
                 </select>
             </label>
         </div>
@@ -56,7 +56,7 @@
             <label>
                 group
                 <select name="group_id">
-                    <?php include 'groupSelect.php' ?>
+                    <?php include 'groupNames.php' ?>
                 </select>
             </label>
         </div>

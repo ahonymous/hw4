@@ -14,6 +14,7 @@ class Teacher extends Entity
     private $id;
     private $name;
     private $surname;
+    private $groups = [];
 
     use EntityTrait;
 
@@ -69,6 +70,22 @@ class Teacher extends Entity
     public function setSurname($surname)
     {
         $this->surname = $surname;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param int $groupId
+     */
+    public function addGroup($groupId)
+    {
+        array_push($this->groups, $groupId);
     }
 
     /**

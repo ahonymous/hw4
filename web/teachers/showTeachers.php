@@ -9,7 +9,6 @@
 ini_set('display_errors', 'on');
 require '../../config/autoload.php';
 use Layer\Manager\Manager;
-
 $teachersManager = new Manager();
 $teachers = $teachersManager->findAll('teacher');
 foreach($teachersManager->findAll('teacher') as $row) {

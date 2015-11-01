@@ -10,9 +10,9 @@
 ini_set('display_errors', 'on');
 require '../../config/autoload.php';
 use \Entity\Teacher;
-use Layer\Manager\Manager;
+use Layer\Manager\TeacherManager;
 
-$teacherManager = new Manager();
+$teacherManager = new TeacherManager();
 if (isset($_POST['submit']))
 {
     $name = isset($_POST['name']) ? $_POST['name'] : "";
@@ -29,12 +29,26 @@ if (isset($_POST['submit']))
         }
         else
         {
+            foreach($_POST as $key => $value)
+            {
+                if (strpos($key,'group_') !== false)
+                {
+                    $teacher->addGroup($value);
+                }
+            }
             $teacherManager->update($teacher);
             echo "updated";
         }
     }
     else
     {
+        foreach($_POST as $key => $value)
+        {
+            if (strpos($key,'group_') !== false)
+            {
+                $teacher->addGroup($value);
+            }
+        }
         $teacherManager->insert($teacher);
         echo "added";
     }

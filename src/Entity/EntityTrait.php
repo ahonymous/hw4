@@ -79,7 +79,7 @@ trait EntityTrait
     function getKeys($cleanKeys) {
         $keys = [];
         foreach($this as $key => $value) {
-            if ($value) {
+            if ($value && ! is_array($value)) {
                 array_push($keys, $cleanKeys ? $key : "`".$key."`");
             }
         }
@@ -91,7 +91,7 @@ trait EntityTrait
     function getValues() {
         $values = [];
         foreach($this as $key => $value) {
-            if ($value) {
+            if ($value && ! is_array($value)) {
                 array_push($values, "'".$value."'");
             }
         }

@@ -76,11 +76,6 @@ class Manager extends AbstractManager
             "SELECT * FROM `".$entityName."` WHERE `id`=".$id." LIMIT 1"
         );
         return $result;
-//        foreach($result as $row) {
-//            foreach($row as $key => $value) {
-//                if (!is_int($key)) echo "<b>".$key."</b>: ".$value.", ";
-//            }
-//        }
     }
 
     /**
@@ -115,6 +110,6 @@ class Manager extends AbstractManager
      */
     public function execute($query)
     {
-        $this->connection->prepare($query)->execute();
+        $this->connection->query($query);
     }
 }
