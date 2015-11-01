@@ -4,13 +4,16 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Alex Moshta",
-            "email": "ahonymous@gmail.com"
+            "name": "Evgen Salyakin",
+            "email": "e.salyakin@gmail.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Layer\\": "src/Layer/"
+            "Layer\\": "src/Layer/",
+            "Documents\\": "src/Documents/",
+            "Catalogs\\": "src/Catalogs/",
+            "Reports\\": "src/Reports/"
         }
     },
     "minimum-stability": "stable",
