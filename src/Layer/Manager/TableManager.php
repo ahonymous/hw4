@@ -29,7 +29,7 @@ class TableManager
 
 
             } catch (\PDOException $e) {
-                echo $e->getMessage();//Remove or change message in production code
+                echo $e->getMessage();
 
             }
         }
@@ -53,7 +53,7 @@ class TableManager
 
 
             } catch (\PDOException $e) {
-                echo $e->getMessage();//Remove or change message in production code
+                echo $e->getMessage();
             }
         }
 
@@ -71,7 +71,7 @@ class TableManager
                 $statement->execute();
 
             } catch (\PDOException $e) {
-                echo $e->getMessage();//Remove or change message in production code
+                echo $e->getMessage();
             }
         }
 
@@ -84,6 +84,5 @@ class TableManager
 
         return $tableExists;
     }
-
 
 }
