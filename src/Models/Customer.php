@@ -25,7 +25,6 @@ class Customer extends User
         $find->bindValue(':u_id', $id);
         $find->execute();
         $result = $find->fetch();
-
         return $result;
 
     }
