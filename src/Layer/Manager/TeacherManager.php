@@ -9,6 +9,8 @@
 namespace Layer\Manager;
 
 
+use Entity\Group;
+
 class TeacherManager extends Manager
 {
 
@@ -55,5 +57,16 @@ class TeacherManager extends Manager
                 "VALUES (".$entity->getId().", ".$groupId.")"
             );
         }
+    }
+
+    /**
+     * Search all entity data in the DB
+     * @param mixed $entityName
+     * @return array
+     */
+    public function findAll($entityName)
+    {
+        $teachers = parent::findAll($entityName);
+        return $teachers;
     }
 }

@@ -11,7 +11,6 @@ require '../../config/autoload.php';
 use Layer\Manager\Manager;
 
 $pupilsManager = new Manager();
-$pupils = $pupilsManager->findAll('pupil');
 foreach($pupilsManager->findAll('pupil') as $row) {
     echo "<p>";
     foreach($row as $key => $value) {

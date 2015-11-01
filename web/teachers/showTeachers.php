@@ -8,9 +8,8 @@
 
 ini_set('display_errors', 'on');
 require '../../config/autoload.php';
-use Layer\Manager\Manager;
-$teachersManager = new Manager();
-$teachers = $teachersManager->findAll('teacher');
+use Layer\Manager\TeacherManager;
+$teachersManager = new TeacherManager();
 foreach($teachersManager->findAll('teacher') as $row) {
     echo "<p>";
     foreach($row as $key => $value) {

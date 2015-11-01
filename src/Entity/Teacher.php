@@ -93,6 +93,11 @@ class Teacher extends Entity
      */
     public static function initScript()
     {
-        // TODO: Implement initScript() method.
+        return "CREATE TABLE `teacher` (".
+          "`id` int(11) NOT NULL AUTO_INCREMENT,".
+          "`name` varchar(15) NOT NULL, ".
+          "`surname` varchar(15) NOT NULL, ".
+          "PRIMARY KEY (`id`)".
+        ") ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1";
     }
 }
