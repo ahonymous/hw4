@@ -14,7 +14,7 @@ use PDO;
 
 class Connector implements ConnectorInterface
 {
-    private $db;
+    public $db;
 
 
 
@@ -35,6 +35,14 @@ class Connector implements ConnectorInterface
             return $this->db;
         }
     }
+
+    public function selectAll_query($sql){
+        $sup_query = $this->db->query($sql);
+        $sup_query = setFetchMode(PDO::FETCH_ASSOC);
+        return $sup_query->fetch();
+    }
+
+
 
     public function connectClose(){
         $this->db = null;
