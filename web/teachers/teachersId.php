@@ -10,7 +10,7 @@ ini_set('display_errors', 'on');
 require '../../config/autoload.php';
 use Layer\Manager\Manager;
 
-$pupilManager = new Manager();
-foreach($pupilManager->findAll('pupil') as $row) {
+$teacherManager = new Manager();
+foreach($teacherManager->findAll('teacher') as $row) {
     echo "<option>".$row['id']."</option>";
 }

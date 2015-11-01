@@ -9,35 +9,35 @@
 
 ini_set('display_errors', 'on');
 require '../../config/autoload.php';
-use Entity\Group;
+use \Entity\Teacher;
 use Layer\Manager\Manager;
 
-$groupManager = new Manager();
+$teacherManager = new Manager();
 if (isset($_POST['submit']))
 {
     $name = isset($_POST['name']) ? $_POST['name'] : "";
-    $size = isset($_POST['size']) ? $_POST['size'] : 0;
-    $group = new Group('group', $name, $size);
-    echo "<h1 style='color: green'>Group was successfully ";
+    $surname = isset($_POST['surname']) ? $_POST['surname'] : 0;
+    $teacher = new Teacher('teacher', $name, $surname);
+    echo "<h1 style='color: green'>Teacher was successfully ";
     if (isset($_POST['id']))
     {
-        $group->setId($_POST['id']);
+        $teacher->setId($_POST['id']);
         if (isset($_POST['delete']))
         {
-            $groupManager->remove($group);
+            $teacherManager->remove($teacher);
             echo "removed";
         }
         else
         {
-            $groupManager->update($group);
+            $teacherManager->update($teacher);
             echo "updated";
         }
     }
     else
     {
-        $groupManager->insert($group);
+        $teacherManager->insert($teacher);
         echo "added";
     }
     echo "!</h1>";
 }
-echo "<p><a href='./index.php'>Back</a></p>";
+echo "<p><a href='index.php'>Back</a></p>";
