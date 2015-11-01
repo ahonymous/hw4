@@ -20,8 +20,14 @@ class Connector implements ConnectorInterface
 
     public function __construct(){
         require (__DIR__ . '/../../../config/config.php');
+
         $hostParam = "mysql:host=".$config['host'].";dbname=".$config['db_name'];
+
         return $this->connect($hostParam, $config['db_user'], $config['db_password']);
+    }
+
+    public function __destruct(){
+        $this->connectClose();
     }
 
 
@@ -40,5 +46,7 @@ class Connector implements ConnectorInterface
     public function connectClose(){
         $this->db = null;
     }
+
+
 
 }

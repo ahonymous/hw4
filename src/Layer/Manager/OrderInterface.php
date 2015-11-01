@@ -28,7 +28,7 @@ interface OrderInterface
      * @param $post
      * @return mixed
      */
-    public function delOrder($post);
+    public function delOrder($id);
 
     /** Last  $count orders
      * @param $count
