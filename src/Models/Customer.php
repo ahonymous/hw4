@@ -21,12 +21,13 @@ class Customer extends User
     public function allProfit($id){
         $pdo = new Connector();
 
-        $find = $pdo->db->prepare("SELECT SUM(`value`) FROM `orders` WHERE `customer_id`=:u_id");
+        $find = $pdo->db->prepare("SELECT SUM(`value`) as `summ` FROM `orders` WHERE `customer_id`=:u_id");
         $find->bindValue(':u_id', $id);
-        $find->execute();
-        $result = $find->fetch();
-        return $result;
+        $result = $find->execute();
 
+        if ($result) {
+            return $find->fetch();
+        }
     }
 
 
