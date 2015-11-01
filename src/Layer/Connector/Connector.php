@@ -36,13 +36,6 @@ class Connector implements ConnectorInterface
         }
     }
 
-    public function selectAll_query($sql){
-        $sup_query = $this->db->query($sql);
-        $sup_query = setFetchMode(PDO::FETCH_ASSOC);
-        return $sup_query->fetch();
-    }
-
-
 
     public function connectClose(){
         $this->db = null;

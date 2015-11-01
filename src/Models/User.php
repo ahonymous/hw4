@@ -6,10 +6,12 @@
  * Time: 12:52
  */
 
-namespace Layer\Manager;
-use Layer\Connector\Connector;
+namespace Models;
 
-class UserManager extends AbstractManager
+use Layer\Connector\Connector;
+use Layer\Manager\AbstractManager;
+
+class User extends AbstractManager
 {
 
     protected $table = 'users';
@@ -91,7 +93,7 @@ class UserManager extends AbstractManager
         $find->bindValue(':u_id', $id);
         $find->bindVAlue(':colm', $entityName);
         $find->execute();
-        $result = $find->fetchAll();
+        $result = $find->fetch();
 
         return $result;
 
@@ -106,7 +108,7 @@ class UserManager extends AbstractManager
 
         $pdo = new Connector();
 
-        $find = $pdo->db->query("SELECT * FROM `users`");
+        $find = $pdo->db->query("SELECT * FROM `".$this->table."`");
         $result = $find->fetchAll();
         return $result;
 
@@ -121,11 +123,14 @@ class UserManager extends AbstractManager
     public function findBy($entityName, $criteria = []){
 
         $pdo = new Connector();
+        $find = $pdo->db->query("SELECT :colm FROM `".$this->table."` WHERE `email`=:u_mail AND name=:u_name");
+        $find->bindValue(':colm', $entityName);
+        $find->bindValue(':u_name', $criteria['name']);
+        $find->bindValue(':u_mail', $criteria['email']);
+        $find->execute();
 
-        foreach ($criteria as $criter=>$val){
-            if ($val!=''){
-
-            }      }
+        $result = $find->fetchAll();
+        return $result;
     }
 
 }
