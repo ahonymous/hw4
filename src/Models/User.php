@@ -74,7 +74,7 @@ class User extends AbstractManager
         $pdo = new Connector();
 
         $delete = $pdo->db->prepare("DELETE FROM `".$this->table."` WHERE id=:u_id");
-        $delete->bindValue(':u_id', $entity['id']);
+        $delete->bindValue(':u_id', $entity);
 
         return $delete->execute();
     }

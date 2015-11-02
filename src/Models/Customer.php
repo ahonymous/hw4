@@ -30,5 +30,11 @@ class Customer extends User
         }
     }
 
+    public function profitBy($period, $id){
+        $pdo = new Connector();
+
+        $find = $pdo->db->prepare("SELECT SUM(`value`) as `summ` FROM `order` WHERE `customer_id`=u:id ");
+    }
+
 
 }
