@@ -102,22 +102,29 @@ class Order implements OrderInterface
      * @param $id
      * @return mixed
      */
-    public function findOrder ($person_type, $id){
-
-        if ($person_type='customer'){
-            $colm = 'costomer_id';
-        } elseif ($person_type='user') {
-            $colm= 'user_id';
-        }
+    public function findAll(){
 
         $pdo = new Connector();
-        $lastOrders = $pdo->db->prepare("SELECT * FROM `orders` WHERE `:colm`=:id ");
-        $lastOrders->bindValue(':colm', $colm);
-        $lastOrders->bindValue(':id', $id);
-        $result = $lastOrders->execute();
 
-        if ($result){
-            return $lastOrders->fetchAll();
+        $find = $pdo->db->query("SELECT * FROM `orders`");
+        $orders = $find->fetchAll();
+
+        if ($orders){
+
+            foreach ($orders as $order=>$value){
+
+                $user = new User();
+                $userInfo = $user->find('name',$value['user_id']);
+                $stuffs[$order]['user_name'] = $userInfo;
+
+                $customer = new Customer();
+                $customerInfo = $customer->find('name', $value['id']);
+                $stuffs[$order]['customer_name'] = $customerInfo;
+
+            }
+
+            return $orders;
+
         } else {
             return false;
         }

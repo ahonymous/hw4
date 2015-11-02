@@ -91,11 +91,11 @@ class Stuff implements ManagerInterface
 
         $pdo = new Connector();
 
-        $find = $pdo->db->prepare("SELECT :colm FROM `".$this->table."` WHERE `id`=:s_id");
+        $find = $pdo->db->prepare("SELECT * FROM `".$this->table."` WHERE `:colm`=:s_id");
         $find->bindValue(':s_id', $id);
         $find->bindVAlue(':colm', $entityName);
         $find->execute();
-        $result = $find->fetch();
+        $result = $find->fetchAll();
 
         return $result;
 
@@ -111,8 +111,23 @@ class Stuff implements ManagerInterface
         $pdo = new Connector();
 
         $find = $pdo->db->query("SELECT * FROM `".$this->table."`");
-        $result = $find->fetchAll();
-        return $result;
+        $stuffs = $find->fetchAll();
+
+        if ($stuffs){
+
+            foreach ($stuffs as $stuff=>$value){
+
+                $customer = new Customer();
+                $customerInfo = $customer->find('name', $value['id']);
+                $stuffs[$stuff]['customer_name'] = $customerInfo;
+
+            }
+
+            return $stuffs;
+
+        } else {
+            return false;
+        }
 
     }
 
@@ -134,4 +149,6 @@ class Stuff implements ManagerInterface
         $result = $find->fetchAll();
         return $result;
     }
+
+
 }

@@ -4,9 +4,10 @@ require __DIR__ . '/conf/config.php';
 
 use Models\User;
 use Models\Customer;
+use Models\Stuff;
+use Models\Order;
 
 if (isset($_GET['action'])){
-
     switch ($_GET['action']){
         case 'users':
             if ($_GET['subaction']){
@@ -114,43 +115,54 @@ if (isset($_GET['action'])){
         case 'order':
             if ($_GET['subaction']){
                 switch($_GET['subaction']) {
-                    case '':
 
+                    case 'add_customer_stuffs':
+                        $stuff = new Stuff();
+                        $stuffs = $stuff->find('customer_id', $_POST['id']);
+                        if ($stuffs) {
+                            echo json_encode($stuffs);
+                        } else {
+                            echo 'false';
+                        }
                         break;
+                    case 'add':
+                        $order = new Order();
+                        $result = $order->addOrder($_POST);
+                        if ($result){
+                            echo '<script type="text/javascript">';
+                            echo 'window.location.href="/index.php?action=order";';
+                            echo '</script>';
+                        } else {
+                            echo 'Возникла ошибка';
+                        }
+                        break;
+                    default:
+                        $order = new Order();
+                        $orders = $order->findAll();
+
+                        $smarty->assign('orders', $orders);
+                        $smarty->display('order.tpl');
                 }
             } else {
-                $user = new User();
-                $allUsers = $user->findAll();
+                $order = new Order();
+                $orders = $order->findAll();
 
-                $customer = new Customer();
-                $allCustomers = $customer->findAll();
+                $smarty->assign('orders', $orders);
+                $smarty->display('orders.tpl');
             }
 
 
             break;
         case 'stuff':
+            $stuff = new Stuff();
+            $allStufs = $stuff->findAll();
+
             $smarty->display('stuff.tpl');
             break;
     }
 } else {
-    $get = [
-        'name'=>'Vasia evrey',
-        'email'=>'hitruy@gmail.com',
-        'password'=>'435345'
-    ];
-
-
-    $user = new Customer();
-    $res = $user->insert($get);
-    print_r($res);
-    $smarty->assign('users',$res);
     $smarty->display('index.tpl');
 }
-
-
-$get=['name'=>'John',
-      'password'=>'krasnu123',
-      'email'=>'rupp21312@gmail.com'];
 
 
 
