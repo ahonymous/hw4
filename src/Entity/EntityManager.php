@@ -5,42 +5,33 @@ namespace Entity;
 use Layer\Manager\AbstractManager;
 use Layer\Connector\ConnectorInterface;
 use PDO;
+use Layer\Connector\Connector;
 
 /**
  * Class EntityManager
  * @package Entity
  */
-class EntityManager extends AbstractManager implements ConnectorInterface
+class EntityManager extends AbstractManager
 {
 
     /**
-     * @return PDO
+     * @var
      */
-    public function connect()
-    {
-        require __DIR__ . '/../../config/config.php';
+    private $connection;
 
-        return new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['db_name'] . '', $config['db_user'], $config['db_password']);
+    public function __construct(){
+        $this->connection = new Connector();
+        $this->connection = $this->connection->connect();
+    }
+
+    public function __destruct(){
+        $this->connection = null;
     }
 
     public function db_init(){
-
-        $connection = $this->connect();
-
         $query = $connection->query("CREATE TABLE `user` (id INT(11) AUTO_INCREMENT PRIMARY KEY, username VARCHAR(60), createdat INT(11), updatedat INT(11), deletedat INT(11) )");
         $query = $connection->query("CREATE TABLE `product` (id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60), price INT(11), createdat INT(11), updatedat INT(11), deletedat INT(11) )");
         $query = $connection->query("CREATE TABLE `order` (id INT(11) AUTO_INCREMENT PRIMARY KEY, userid INT(11), productid INT(11), price INT(11))");
-
-    }
-
-
-    /**
-     * @param $db
-     * @return null
-     */
-    public function connectClose($db)
-    {
-        return $this->connection = null;
     }
 
     /**
@@ -57,8 +48,6 @@ class EntityManager extends AbstractManager implements ConnectorInterface
             }
         }
 
-
-        $connection = $this->connect();
         $table = new \ReflectionClass($entity);
         $table = strtolower($table->getShortName());
 
@@ -68,15 +57,15 @@ class EntityManager extends AbstractManager implements ConnectorInterface
         foreach ($values as $key => $val){
             if ($val) {
                 $field[] = $key;
-                $vals[] = $connection->quote($val);
+                $vals[] = $this->connection->quote($val);
             }
         }
 
-        $query = $connection->prepare("INSERT INTO `$table` (`" . implode($field, "`,`") . "`) VALUES (" . implode($vals, ",") . ")");
+        $query = $this->connection->prepare("INSERT INTO `$table` (`" . implode($field, "`,`") . "`) VALUES (" . implode($vals, ",") . ")");
 
         $query->execute();
 
-        return $connection->lastInsertId();
+        return $this->connection->lastInsertId();
 
     }
 
@@ -94,8 +83,6 @@ class EntityManager extends AbstractManager implements ConnectorInterface
             }
         }
 
-        $connection = $this->connect();
-
         $table = new \ReflectionClass($entity);
         $table = strtolower($table->getShortName());
 
@@ -103,7 +90,7 @@ class EntityManager extends AbstractManager implements ConnectorInterface
 
         foreach ($values as $key => $val){
             if ($val && $key != 'id') {
-                $update .= $key . ' = ' . $connection->quote($val) . ',';
+                $update .= $key . ' = ' . $this->connection->quote($val) . ',';
             }
         }
 
@@ -111,7 +98,7 @@ class EntityManager extends AbstractManager implements ConnectorInterface
 
         $id = $values['id'];
 
-        $query = $connection->prepare("UPDATE $table SET $update WHERE id=$id");
+        $query = $this->connection->prepare("UPDATE $table SET $update WHERE id=$id");
 
         return $query->execute();
     }
@@ -140,9 +127,7 @@ class EntityManager extends AbstractManager implements ConnectorInterface
      */
     public function find($entityName, $id)
     {
-
-        $connection = $this->connect();
-        $query = $connection->query("SELECT * FROM $entityName WHERE id=$id");
+        $query = $this->connection->query("SELECT * FROM $entityName WHERE id=$id");
         $query->execute();
 
         return $query->fetch();
@@ -154,19 +139,15 @@ class EntityManager extends AbstractManager implements ConnectorInterface
      */
     public function findAll($entityName)
     {
-
-        $connection = $this->connect();
-
         if ($entityName == 'order'){
-            $query = $connection->prepare("SELECT O.id, U.username, P.name, P.price FROM `order` AS O LEFT JOIN user AS U ON U.id = O.userid LEFT JOIN product AS P ON P.id = O.productid");
+            $query = $this->connection->prepare("SELECT O.id, U.username, P.name, P.price FROM `order` AS O LEFT JOIN user AS U ON U.id = O.userid LEFT JOIN product AS P ON P.id = O.productid");
         } else {
-            $query = $connection->prepare("SELECT * FROM $entityName");
+            $query = $this->connection->prepare("SELECT * FROM $entityName");
         }
 
         $query->execute();
 
         return $query->fetchAll();
-
     }
 
     /**
@@ -185,8 +166,7 @@ class EntityManager extends AbstractManager implements ConnectorInterface
                 $value = $criteria['user_name'];
             }
 
-            $connection = $this->connect();
-            $query = $connection->query("SELECT * FROM $entityName WHERE $field IN ($value)");
+            $query = $this->connection->query("SELECT * FROM $entityName WHERE $field IN ($value)");
 
             $query->execute();
 
