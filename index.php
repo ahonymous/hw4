@@ -1,6 +1,168 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
-require (__DIR__ . '/config/config.php');
-use Layer\Connector\Connector;
+require __DIR__ . '/conf/config.php';
 
-$connection = new Connector();
+use Models\User;
+use Models\Customer;
+use Models\Stuff;
+use Models\Order;
+
+if (isset($_GET['action'])){
+    switch ($_GET['action']){
+        case 'users':
+            if ($_GET['subaction']){
+                switch($_GET['subaction']){
+
+                    case 'del':
+                        $user = new User();
+                        $del = $user->remove($_POST['id']);
+
+                        if ($del){
+                            echo 'Пользователь удален';
+                        } else {
+                            echo 'Возникла ошибка';
+                        }
+
+                        break;
+
+                    case 'add':
+                        $user = new User();
+                        $addUser = $user->insert($_POST);
+
+                        if ($addUser){
+                            echo '<script type="text/javascript">';
+                            echo 'window.location.href="/index.php?action=users";';
+                            echo '</script>';
+                        } else {
+                            echo 'Ошибка при добавлении нового пользователя';
+                        }
+
+                    break;
+
+                    case 'find':
+                        $user = new User();
+                        $find = $user->find($_POST['colm'], $_POST['id']);
+
+                        $smarty->assign('user', $find);
+                        $smarty->display('serch_resul.tpl');
+
+                        break;
+
+                    default:
+
+                        $user = new User();
+                        $allUsers = $user->findAll();
+
+                        $smarty->assign('users',$allUsers);
+                        $smarty->display('users.tpl');
+
+                        break;
+                }
+            }
+            break;
+        case 'customers':
+            if ($_GET['subaction']){
+                switch($_GET['subaction']){
+
+                    case 'del':
+                        $customer = new Customer();
+                        $del = $customer->remove($_POST['id']);
+
+                        if ($del){
+                            echo 'Продавец удален';
+                        } else {
+                            echo 'Возникла ошибка';
+                        }
+
+                        break;
+
+                    case 'add':
+                        $customer = new Customer();
+                        $addCustomer = $customer->insert($_POST);
+
+                        if ($addUser){
+                            echo '<script type="text/javascript">';
+                            echo 'window.location.href="/index.php?action=customers";';
+                            echo '</script>';
+                        } else {
+                            echo 'Ошибка при добавление нового продавца';
+                        }
+
+                        break;
+
+                    case 'find':
+                        $customer = new Customer();
+                        $find = $customer->find($_POST['colm'], $_POST['id']);
+
+                        $smarty->assign('custoner', $find);
+                        $smarty->display('serch_result_customer.tpl');
+
+                        break;
+
+                    default:
+
+                        $user = new User();
+                        $allUsers = $user->findAll();
+
+                        $smarty->assign('users',$allUsers);
+                        $smarty->display('users.tpl');
+
+                        break;
+                }
+            }
+            break;
+
+        case 'order':
+            if ($_GET['subaction']){
+                switch($_GET['subaction']) {
+
+                    case 'add_customer_stuffs':
+                        $stuff = new Stuff();
+                        $stuffs = $stuff->find('customer_id', $_POST['id']);
+                        if ($stuffs) {
+                            echo json_encode($stuffs);
+                        } else {
+                            echo 'false';
+                        }
+                        break;
+                    case 'add':
+                        $order = new Order();
+                        $result = $order->addOrder($_POST);
+                        if ($result){
+                            echo '<script type="text/javascript">';
+                            echo 'window.location.href="/index.php?action=order";';
+                            echo '</script>';
+                        } else {
+                            echo 'Возникла ошибка';
+                        }
+                        break;
+                    default:
+                        $order = new Order();
+                        $orders = $order->findAll();
+
+                        $smarty->assign('orders', $orders);
+                        $smarty->display('order.tpl');
+                }
+            } else {
+                $order = new Order();
+                $orders = $order->findAll();
+
+                $smarty->assign('orders', $orders);
+                $smarty->display('orders.tpl');
+            }
+
+
+            break;
+        case 'stuff':
+            $stuff = new Stuff();
+            $allStufs = $stuff->findAll();
+
+            $smarty->display('stuff.tpl');
+            break;
+    }
+} else {
+    $smarty->display('index.tpl');
+}
+
+
+

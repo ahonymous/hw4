@@ -10,12 +10,14 @@
     ],
     "autoload": {
         "psr-4": {
-            "Layer\\": "src/Layer/"
+            "Layer\\": "src/Layer/",
+            "Models\\": "src/Models/"
         }
     },
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.5.0",
-        "ext-mysqlnd": "*"
+        "ext-mysqlnd": "*",
+        "smarty/smarty": "^3.1"
     }
 }
