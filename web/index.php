@@ -17,3 +17,4 @@ $actionName = isset($_GET['action']) ? $_GET['action'] : 'index';
 $actionName = $actionName . 'Action';
 $response = $controller->$actionName();
 echo $response;
+DBConnector::connectClose($connector);

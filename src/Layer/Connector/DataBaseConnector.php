@@ -11,6 +11,7 @@ class DataBaseConnector implements ConnectorInterface
 {
     private static $dsn = null;
 
+
     public static function connect($dataBaseName, $user, $password)
     {
         if (self::$dsn == null) {
