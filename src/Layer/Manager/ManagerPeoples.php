@@ -20,10 +20,10 @@ class ManagerPeoples extends Manager{
      */
     public function insert($entity)
     {
-        $firstname = $entity->getFirstName();
-        $lastname = $entity->getSecondName();
+        $firstName = $entity->getFirstName();
+        $lastName = $entity->getSecondName();
         $sth = $this->dbh->prepare('INSERT INTO Peoples (firstname, lastname) VALUES (:firstname,:lastname)');
-        return $sth->execute(array(':firstname' => $firstname, ':lastname' => $lastname));
+        return $sth->execute(array(':firstname' => $firstName, ':lastname' => $lastName));
     }
 
     /**
@@ -32,8 +32,11 @@ class ManagerPeoples extends Manager{
      */
     public function update($entity)
     {
-        $sth = $this->dbh->prepare('UPDATE Peoples SET firstname = :firstname WHERE id=1');
-        return $sth->execute(array(':firstname' => 'Natasha'));
+        $firstName = $entity->getFirstName();
+        $lastName = $entity->getSecondName();
+        $sth = $this->dbh->prepare('UPDATE Peoples SET firstname = :firstname WHERE lastname = :lastname');
+        return $sth->execute(array(':firstname' => $firstName,
+                                    ':lastname' => $lastName));
     }
 
     /**
@@ -42,8 +45,9 @@ class ManagerPeoples extends Manager{
      */
     public function remove($entity)
     {
+        $firstName = $entity->getFirstName();
         $sth = $this->dbh->prepare('DELETE FROM Peoples WHERE firstname = :firstname');
-        return $sth->execute(array(':firstname' => 'Natalia'));
+        return $sth->execute(array(':firstname' => $firstName));
     }
 
     /**
@@ -55,8 +59,8 @@ class ManagerPeoples extends Manager{
     {
         if ($entityName == 'Peoples')
         {
-            $sth = $this->dbh->prepare('SELECT firstname FROM Peoples WHERE id = :id');
-            $sth->execute(array(':id' => $id));
+            $sth = $this->dbh->prepare('SELECT * FROM Peoples WHERE firstname = :firstname');
+            $sth->execute(array(':firstname' => $id));
             return $resalt = $sth->fetchAll(\PDO::FETCH_ASSOC);
         }
     }
