@@ -28,4 +28,8 @@ class MobileTelephone extends Telephones
     {
         $this->imeiPhone = $imeiPhone;
     }
+
+    public function getType(){
+        return $this->typeTelephone;
+    }
 }

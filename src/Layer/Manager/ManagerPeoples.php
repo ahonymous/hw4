@@ -5,10 +5,19 @@ namespace Layer\Manager;
 
 class ManagerPeoples extends Manager{
     private $dbh;
+
+    /**
+     * @param $dbh
+     */
     public function __construct($dbh)
     {
         $this->dbh = $dbh;
     }
+
+    /**
+     * @param mixed $entity
+     * @return mixed
+     */
     public function insert($entity)
     {
         $firstname = $entity->getFirstName();
@@ -17,12 +26,20 @@ class ManagerPeoples extends Manager{
         return $sth->execute(array(':firstname' => $firstname, ':lastname' => $lastname));
     }
 
+    /**
+     * @param $entity
+     * @return mixed
+     */
     public function update($entity)
     {
         $sth = $this->dbh->prepare('UPDATE Peoples SET firstname = :firstname WHERE id=1');
         return $sth->execute(array(':firstname' => 'Natasha'));
     }
 
+    /**
+     * @param $entity
+     * @return mixed
+     */
     public function remove($entity)
     {
         $sth = $this->dbh->prepare('DELETE FROM Peoples WHERE firstname = :firstname');
@@ -43,6 +60,11 @@ class ManagerPeoples extends Manager{
             return $resalt = $sth->fetchAll(\PDO::FETCH_ASSOC);
         }
     }
+
+    /**
+     * @param $entityName
+     * @return mixed
+     */
     public function findAll($entityName)
     {
         if ($entityName == 'Peoples')
@@ -53,6 +75,11 @@ class ManagerPeoples extends Manager{
         }
     }
 
+    /**
+     * @param $entityName
+     * @param array $criteria
+     * @return mixed
+     */
     public function findBy($entityName, $criteria = [])
     {
         $param1 = $criteria[0];
@@ -60,7 +87,7 @@ class ManagerPeoples extends Manager{
         if($entityName == 'Peoples')
         {
             $sth = $this->dbh->prepare("SELECT $param1, $param2 FROM Peoples");
-            $sth->execute(/*array(':param1' => $param1, 'param2' => $param2)*/);
+            $sth->execute();
             return $resalt = $sth->fetchAll(\PDO::FETCH_ASSOC);
         }
     }

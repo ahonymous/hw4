@@ -72,23 +72,8 @@ abstract class Manager implements ManagerInterface
 
     /**
      * @param $entity
-     * @param $scl
+     * @param $sql
      * @return mixed
      */
-    public function createTable($entity, $scl)
-    {
-        $entity->exec($scl);
-    }
-
-    /**
-     * @param $entity
-     * @param $scl
-     * @return mixed
-     */
-    public function dropTable($entity, $scl)
-    {
-        // TODO: Implement dropTable() method.
-    }
-
 
 }

@@ -8,6 +8,7 @@ class Devices extends AbstractDevices{
     private $modelDevice;
     private $brandDevice;
     private $id;
+    private $typeDev;
 
     /**
      * @return mixed
@@ -47,4 +48,8 @@ class Devices extends AbstractDevices{
     {
         $this->id = $id;
     }
+    public function getType(){
+        return $this->typeDev;
+    }
+
 }
