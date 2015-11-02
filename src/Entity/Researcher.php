@@ -4,8 +4,6 @@ namespace Entity;
 
 class Researcher
 {
-    use EntityTrait;
-
     private $fullname;
     private $experience;
     private $degree;

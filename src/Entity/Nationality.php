@@ -4,8 +4,6 @@ namespace Entity;
 
 class Nationality
 {
-    use EntityTrait;
-
     private $nationality;
 
     /**

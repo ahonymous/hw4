@@ -17,9 +17,9 @@ class Connector implements ConnectorInterface
         }
     }
 
-    public function connect($host, $user, $password)
+    public function connect()
     {
-        return $this->pdo = new \PDO($host, $user, $password);
+        return $this->pdo;
     }
 
     public function connectClose($db)

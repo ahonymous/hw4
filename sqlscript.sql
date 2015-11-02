@@ -5,6 +5,8 @@ GRANT SUPER ON *.* TO 'dbuser'@'localhost';
 
 USE researches;
 
+SET FOREIGN_KEY_CHECKS = 0;
+
 CREATE TABLE researchers (
   id INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (id),
@@ -12,9 +14,7 @@ CREATE TABLE researchers (
   experience INT,
   degree CHAR(30),
   nationality_id INT,
-  created_at DATE,
-  updated_at DATE,
-  deleted_at DATE
+  FOREIGN KEY (nationality_id) REFERENCES nationalities(id)
 );
 
 INSERT INTO researchers(id, full_name, experience, degree, nationality_id)
@@ -36,10 +36,7 @@ CREATE TABLE projects (
   PRIMARY KEY (id),
   project_name VARCHAR (100),
   execution_time INT,
-  field CHAR(30),
-  created_at DATE,
-  updated_at DATE,
-  deleted_at DATE
+  field CHAR(30)
 );
 
 INSERT INTO projects (id, project_name, execution_time, field)
@@ -57,7 +54,9 @@ CREATE TABLE reserchers_projects (
   id INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (id),
   researcher_id INT,
-  project_id INT
+  project_id INT,
+  FOREIGN KEY (researcher_id) REFERENCES researchers(id),
+  FOREIGN KEY (project_id) REFERENCES projects(id)
 );
 
 INSERT INTO reserchers_projects (id, researcher_id, project_id)
@@ -80,10 +79,7 @@ VALUES
 CREATE TABLE nationalities (
   id INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (id),
-  nationality CHAR (30),
-  created_at DATE,
-  updated_at DATE,
-  deleted_at DATE
+  nationality CHAR (30)
 );
 
 INSERT INTO nationalities (id, nationality)
@@ -96,16 +92,13 @@ VALUES
 CREATE TABLE grants (
   id INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (id),
-  grant INT,
+  granted INT,
   fund CHAR (30),
   project_id INT,
-  FOREIGN KEY (project_id) REFERENCES projects(id),
-  created_at DATE,
-  updated_at DATE,
-  deleted_at DATE
+  FOREIGN KEY (project_id) REFERENCES projects(id)
 );
 
-INSERT INTO grants (id, grant, fund, project_id)
+INSERT INTO grants (id, granted, fund, project_id)
 VALUES
 (1, 30000, 'WAJDH', 1),
 (2, 40000, 'KJLK', 2),

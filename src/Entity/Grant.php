@@ -4,8 +4,6 @@ namespace Entity;
 
 class Grant
 {
-    use EntityTrait;
-
     private $grant;
     private $fund;
 

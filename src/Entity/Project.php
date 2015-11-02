@@ -4,8 +4,6 @@ namespace Entity;
 
 class Project
 {
-    use EntityTrait;
-
     private $projectName;
     private $executionTime;
     private $field;
