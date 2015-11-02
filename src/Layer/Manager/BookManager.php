@@ -47,8 +47,6 @@ class BookManager extends AbstractManager
 
     public function insert($entity)
     {
-        //$currentDate = new \DateTime();
-        //$entity->setCreatedAt($currentDate);
         parent::insert($entity);
 
         $statement = $this->connector->prepare('INSERT INTO books (title, isbn, author, publishing_house, price, created_at) VALUES(:title, :isbn, :author, :publishingHouse, :price, :createdAt)');
