@@ -74,7 +74,9 @@ class EntityManager extends AbstractManager implements ConnectorInterface
 
         $query = $connection->prepare("INSERT INTO `$table` (`" . implode($field, "`,`") . "`) VALUES (" . implode($vals, ",") . ")");
 
-        return $query->execute();
+        $query->execute();
+
+        return $connection->lastInsertId();
 
     }
 

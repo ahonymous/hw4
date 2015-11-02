@@ -3,7 +3,9 @@
 require __DIR__ . '/../config/autoload.php';
 
 use Entity\EntityManager;
+use User\User;
 
+session_start();
 ?>
 
 <html>
@@ -33,32 +35,23 @@ use Entity\EntityManager;
 
 <div class="container">
 
-<!--    <div id="header">-->
-<!--        <a href="/../shop/" class="btn btn-default">Shop</a>-->
-<!--        <a href="/../user/" class="btn btn-default">Users</a>-->
-<!--        <a href="/../user/AddUser.php" class="btn btn-default">Add User</a>-->
-<!--        <a href="/../products/index.php" class="btn btn-default">Products</a>-->
-<!--        <a href="/../products/AddProduct.php" class="btn btn-default">Add Product</a>-->
-<!--        <a href="/../orders/index.php" class="btn btn-default">Orders</a>-->
-<!--    </div>-->
-
     <?php
+
+    $entity = new EntityManager();
+    $entity->db_init();
 
     if (isset($_POST['name'])){
 
-        $criteria = array(
-            'user_name' => $_POST['name']
-        );
-        $user_login = new EntityManager();
-        $user_login->findBy('users', $criteria);
-        var_dump($user_login);
-//        header("Location: index.php");
+        $user_login = new User();
+        $user_login->setUserName($_POST['name']);
+
+        $id = $entity->insert($user_login);
+        $_SESSION['user'] = $id;
+
+        header("Location: /user/index.php");
         exit;
 
     }
-
-    $db_init = new EntityManager();
-    $db_init->db_init();
 
     ?>
 

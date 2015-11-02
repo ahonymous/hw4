@@ -11,7 +11,7 @@ if (isset($_GET['card']) && isset($_GET['confirm']) && $_GET['confirm'] == true 
 
     foreach ($_SESSION['add-to-card'] as $product_id) {
         $order = new Order();
-        $order->setUserId('23');
+        $order->setUserId($_SESSION['user']);
         $order->setProductId($product_id);
         $add_order = new EntityManager();
         $add_order->insert($order);
