@@ -11,9 +11,10 @@
     "autoload": {
         "psr-4": {
             "Product\\": "src/Product",
-            "Customer\\": "src/User",
+            "User\\": "src/User",
             "Layer\\": "src/Layer",
-            "Entity\\": "src/Entity"
+            "Entity\\": "src/Entity",
+            "Order\\": "src/Order"
         }
     },
     "minimum-stability": "stable",

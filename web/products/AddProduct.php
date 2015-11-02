@@ -3,6 +3,7 @@
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use Entity\EntityManager;
+use Product\Product;
 
 ?>
 
@@ -46,16 +47,19 @@ use Entity\EntityManager;
 
     if (isset($_POST['name']) && isset($_POST['price'])){
 
-        $product = array(
-            'entity' => 'products',
-            'name' => $_POST['name'],
-            'price' => $_POST['price']
-        );
+        $product  = new Product();
+        $product->setName($_POST['name']);
+        $product->setPrice($_POST['price']);
 
-        $user_insert = new EntityManager();
-        $user_insert->insert($product);
+        $date = new DateTime('now');
+        $product->setCreatedAt($date->getTimestamp());
+
+        $product_insert = new EntityManager();
+        $product_insert->insert($product);
+
         header("Location: index.php");
         exit;
+
     }
 
     ?>

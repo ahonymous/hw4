@@ -7,7 +7,7 @@ use Entity\EntityManager;
 if (isset($_GET['delete'])){
 
     $entity = array(
-        'entity' => 'products',
+        'entity' => 'product',
         'id' => $_GET['delete']
     );
 
@@ -63,7 +63,7 @@ if (isset($_GET['delete'])){
         <?php
 
         $product = new EntityManager();
-        $list_products = $product->findAll('products');
+        $list_products = $product->findAll('product');
 
         foreach ($list_products as $product):
             ?>

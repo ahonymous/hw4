@@ -46,11 +46,14 @@
 
             if (isset($_POST['name'])){
 
-                $user = array(
-                    'entity' => 'users',
-                    'id' => $_GET['id'],
-                    'name' => $_POST['name']
-                );
+                $date = new DateTime('now');
+                $date = $date->getTimestamp();
+
+                $user = new \User\User();
+                $user->setId($_GET['id']);
+                $user->setUserName($_POST['name']);
+                $user->setUpdatedAt($date);
+
                 $user_update = new EntityManager();
                 $user_update->update($user);
                 header("Location: index.php");
@@ -61,7 +64,7 @@
             if (isset($_GET['id'])){
 
                 $get_user = new EntityManager();
-                $user = $get_user->find('users', $_GET['id']);
+                $user = $get_user->find('user', $_GET['id']);
 
             }
 
@@ -70,7 +73,7 @@
         <form method="post">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="<?php print $user['user_name']; ?>">
+                <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="<?php print $user['username']; ?>">
             </div>
 
             <button type="submit" class="btn btn-default">Edit</button>

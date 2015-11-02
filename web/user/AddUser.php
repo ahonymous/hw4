@@ -3,6 +3,7 @@
     require_once __DIR__.'/../../vendor/autoload.php';
 
     use Entity\EntityManager;
+    use User\User;
 
 ?>
 
@@ -44,12 +45,17 @@
 
         <?php
 
-            if (isset($_POST['name'])){
+            if (isset($_POST['name'])) {
 
-                $user = array(
-                    'entity' => 'users',
-                    'name' => $_POST['name']
-                );
+                $user  = new User();
+                $user->setUserName($_POST['name']);
+                $date = new DateTime('now');
+                $user->setCreatedAt($date->getTimestamp());
+
+//                $user = array(
+//                    'entity' => 'users',
+//                    'user_name' => $_POST['name']
+//                );
 
                 $user_insert = new EntityManager();
                 $user_insert->insert($user);

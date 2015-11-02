@@ -7,7 +7,7 @@
     if (isset($_GET['delete'])){
 
         $entity = array(
-            'entity' => 'users',
+            'entity' => 'user',
             'id' => $_GET['delete']
         );
 
@@ -63,14 +63,14 @@
                 <?php
 
                     $user = new EntityManager();
-                    $list_users = $user->findAll('users');
+                    $list_users = $user->findAll('user');
 
-                    foreach ($list_users as $user):
+                    foreach ($list_users as $user) :
                 ?>
 
                     <tr>
                         <td><?php print $user['id']; ?></td>
-                        <td><?php print $user['user_name']; ?></td>
+                        <td><?php print $user['username']; ?></td>
                         <td>
                             <a href="EditUser.php?id=<?php print $user['id']; ?>" class="btn btn-default">Edit</a>
                             <a href="?delete=<?php print $user['id']; ?>" class="btn btn-danger">Delete</a>

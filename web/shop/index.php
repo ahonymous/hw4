@@ -3,27 +3,20 @@
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use Entity\EntityManager;
+use Order\Order;
 
 session_start();
 
 if (isset($_GET['card']) && isset($_GET['confirm']) && $_GET['confirm'] == true && isset($_SESSION['add-to-card'])){
-    $add_order = new EntityManager();
-    $values = '';
 
     foreach ($_SESSION['add-to-card'] as $product_id) {
-
-        $values .= '(25,' . $product_id . '),';
-
+        $order = new Order();
+        $order->setUserId('23');
+        $order->setProductId($product_id);
+        $add_order = new EntityManager();
+        $add_order->insert($order);
     }
 
-    $values = trim($values, ",");
-
-    $order = array(
-        'entity' => 'orders',
-        'values' => $values
-    );
-
-    $add_order->insert($order);
     unset($_SESSION['add-to-card']);
 
 }
@@ -85,7 +78,7 @@ if (isset($_GET['card']) && isset($_GET['confirm']) && $_GET['confirm'] == true 
             }
 
             $product = new EntityManager();
-            $list_products = $product->findBy('products', $criteria);
+            $list_products = $product->findBy('product', $criteria);
 
             if ($list_products){
 
@@ -128,7 +121,7 @@ if (isset($_GET['card']) && isset($_GET['confirm']) && $_GET['confirm'] == true 
 
 
             $product = new EntityManager();
-            $list_products = $product->findAll('products');
+            $list_products = $product->findAll('product');
 
             foreach ($list_products as $product):
             ?>

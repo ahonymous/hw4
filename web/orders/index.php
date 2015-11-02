@@ -7,7 +7,7 @@ use Entity\EntityManager;
 if (isset($_GET['delete'])){
 
     $entity = array(
-        'entity' => 'products',
+        'entity' => 'product',
         'id' => $_GET['delete']
     );
 
@@ -64,18 +64,14 @@ if (isset($_GET['delete'])){
         <?php
 
         $orders = new EntityManager();
-        $list_orders = $orders->findAll('orders');
-//
-//        echo "<pre>";
-//        var_dump($list_orders);
-//        echo "</pre>";
+        $list_orders = $orders->findAll('order');
 
         foreach ($list_orders as $order):
             ?>
 
             <tr>
                 <td><?php print $order['id']; ?></td>
-                <td><?php print $order['user_name']; ?></td>
+                <td><?php print $order['username']; ?></td>
                 <td><?php print $order['name']; ?></td>
                 <td><?php print $order['price']; ?>$</td>
             </tr>

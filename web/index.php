@@ -57,6 +57,8 @@ use Entity\EntityManager;
 
     }
 
+    $db_init = new EntityManager();
+    $db_init->db_init();
 
     ?>
 

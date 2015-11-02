@@ -3,6 +3,7 @@
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use Entity\EntityManager;
+use Product\Product;
 
 ?>
 
@@ -10,7 +11,7 @@ use Entity\EntityManager;
 <head>
     <title>Edit Product</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
@@ -46,12 +47,15 @@ use Entity\EntityManager;
 
     if (isset($_POST['name']) && isset($_POST['price'])){
 
-        $product = array(
-            'entity' => 'products',
-            'id' => $_GET['id'],
-            'name' => $_POST['name'],
-            'price' => $_POST['price']
-        );
+        $date = new DateTime('now');
+        $date = $date->getTimestamp();
+
+        $product = new Product();
+        $product->setId($_GET['id']);
+        $product->setName($_POST['name']);
+        $product->setPrice($_POST['price']);
+        $product->setUpdatedAt($date);
+
         $product_update = new EntityManager();
         $product_update->update($product);
         header("Location: index.php");
@@ -62,7 +66,7 @@ use Entity\EntityManager;
     if (isset($_GET['id'])){
 
         $get_product = new EntityManager();
-        $product = $get_product->find('products', $_GET['id']);
+        $product = $get_product->find('product', $_GET['id']);
 
     }
 
