@@ -1,16 +1,15 @@
 <?php
 
-require __DIR__ . '/../config/autoload.php';
+require_once __DIR__.'/../../vendor/autoload.php';
 
 use Entity\EntityManager;
-use User\User;
+use Product\Product;
 
-session_start();
 ?>
 
 <html>
 <head>
-    <title>Login</title>
+    <title>Add Product</title>
 
     <link rel="stylesheet" href="../css/style.css">
 
@@ -31,24 +30,34 @@ session_start();
             crossorigin="anonymous"></script>
 </head>
 
-<body class="add-user">
+<body class="add-product">
 
 <div class="container">
 
+    <div id="header">
+        <a href="/../shop/" class="btn btn-default">Shop</a>
+        <a href="/../user/" class="btn btn-default">Users</a>
+        <a href="/../user/AddUser.php" class="btn btn-default">Add User</a>
+        <a href="/../products/index.php" class="btn btn-default">Products</a>
+        <a href="/../products/AddProduct.php" class="btn btn-default">Add Product</a>
+        <a href="/../orders/index.php" class="btn btn-default">Orders</a>
+    </div>
+
     <?php
 
-    $entity = new EntityManager();
-    $entity->db_init();
+    if (isset($_POST['name']) && isset($_POST['price'])){
 
-    if (isset($_POST['name'])){
+        $product  = new Product();
+        $product->setName($_POST['name']);
+        $product->setPrice($_POST['price']);
 
-        $user_login = new User();
-        $user_login->setUserName($_POST['name']);
+        $date = new DateTime('now');
+        $product->setCreatedAt($date->getTimestamp());
 
-        $id = $entity->insert($user_login);
-        $_SESSION['user'] = $id;
+        $product_insert = new EntityManager();
+        $product_insert->insert($product);
 
-        header("Location: /user/index.php");
+        header("Location: index.php");
         exit;
 
     }
@@ -61,7 +70,12 @@ session_start();
             <input type="text" class="form-control" id="name" placeholder="Name" name="name">
         </div>
 
-        <button type="submit" class="btn btn-default">Sign in</button>
+        <div class="form-group">
+            <label for="name">Price</label>
+            <input type="text" class="form-control" id="name" placeholder="Name" name="price">
+        </div>
+
+        <button type="submit" class="btn btn-default">Add</button>
     </form>
 
 </div>
@@ -69,5 +83,3 @@ session_start();
 
 </body>
 </html>
-
-

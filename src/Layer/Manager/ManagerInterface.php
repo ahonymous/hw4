@@ -51,4 +51,5 @@ interface ManagerInterface
      * @return mixed
      */
     public function findBy($entityName, $criteria = []);
+
 }
