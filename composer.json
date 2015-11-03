@@ -4,13 +4,14 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Alex Moshta",
-            "email": "ahonymous@gmail.com"
+            "name": "Ruslan Koval",
+            "email": "ruslan.koval21@gmail.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Layer\\": "src/Layer/"
+            "Layer\\": "src/Layer/",
+            "Users\\": "src/Users/"
         }
     },
     "minimum-stability": "stable",
