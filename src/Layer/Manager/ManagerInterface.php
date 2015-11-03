@@ -8,26 +8,20 @@ namespace Layer\Manager;
  */
 interface ManagerInterface
 {
-    /**
-     * Insert new entity data to the DB
-     * @param mixed $entity
-     * @return mixed
-     */
-    public function insert($entity);
 
     /**
      * Update exist entity data in the DB
      * @param $entity
      * @return mixed
      */
-    public function update($entity);
+    public function update($name, $surname, $id);
 
     /**
      * Delete entity data from the DB
      * @param $entity
      * @return mixed
      */
-    public function remove($entity);
+    public function remove($tableName, $id);
 
     /**
      * Search entity data in the DB by Id
