@@ -11,7 +11,9 @@ use Layer\Connector\Connector;
 class ProjectManager implements ManagerInterface
 {
     private $connector;
-    public function __construct (Connector $connector){
+
+    public function __construct(Connector $connector)
+    {
         $this->connector = $connector;
     }
 
@@ -33,6 +35,7 @@ class ProjectManager implements ManagerInterface
         $statement->bindValue(':project_name', $entity['project_name']);
         $statement->bindValue(':execution_time', $entity['execution_time']);
         $statement->bindValue(':field', $entity['field']);
+
         return $statement->execute();
     }
 
@@ -46,13 +49,13 @@ class ProjectManager implements ManagerInterface
         $request = "UPDATE projects SET project_name = :project_name,
           execution_time = :execution_time,
           field = :field
-          WHERE id = :id"
-        ;
+          WHERE id = :id";
         $statement = $this->connector->connect()->prepare($request);
         $statement->bindValue(':project_name', $project['project_name']);
         $statement->bindValue(':execution_time', $project['execution_time']);
         $statement->bindValue(':field', $project['field']);
         $statement->bindValue(':id', $id);
+
         return $statement->execute();
     }
 
@@ -65,6 +68,7 @@ class ProjectManager implements ManagerInterface
     {
         $statement = $this->connector->connect()->prepare("DELETE FROM projects WHERE id = :id");
         $statement->bindValue(':id', $entity);
+
         return $statement->execute();
     }
 
@@ -77,6 +81,7 @@ class ProjectManager implements ManagerInterface
         $statement = $this->connector->connect()->prepare("SELECT * FROM projects WHERE id= :id");
         $statement->bindValue(':id', $id);
         $statement->execute();
+
         return $this->generateStrForFetchedData($statement);
     }
 
@@ -87,6 +92,7 @@ class ProjectManager implements ManagerInterface
     {
         $statement = $this->connector->connect()->prepare("SELECT * FROM projects");
         $statement->execute();
+
         return $this->generateStrForFetchedData($statement);
     }
 
@@ -94,7 +100,7 @@ class ProjectManager implements ManagerInterface
      * @param $statement
      * @return array
      */
-    protected function generateStrForFetchedData ($statement)
+    protected function generateStrForFetchedData($statement)
     {
         $res = array();
         while ($tmpRecord = $statement->fetch()) {
@@ -102,11 +108,12 @@ class ProjectManager implements ManagerInterface
         }
         $str = array();
         foreach ($res as $record) {
-            $str[] = 'Запись№ '. $record['id'].
-                '. Тема: '. $record['project_name'].
-                '. Выполнение: '. $record['execution_time'].
-                '. Область: '. $record['field']. '.';
+            $str[] = 'Запись№ '.$record['id'].
+                '. Тема: '.$record['project_name'].
+                '. Выполнение: '.$record['execution_time'].
+                '. Область: '.$record['field'].'.';
         }
+
         return $str;
     }
 }

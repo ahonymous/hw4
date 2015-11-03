@@ -10,7 +10,7 @@ class Connector implements ConnectorInterface
     public function __construct($dbname, $user, $password)
     {
         $this->dbname = $dbname;
-        $dbconfig = 'mysql:host=localhost;dbname=' . $dbname . ';charset=UTF8';
+        $dbconfig = 'mysql:host=localhost;dbname='.$dbname.';charset=UTF8';
         $this->pdo = new \PDO($dbconfig, $user, $password);
         if (!$this->pdo) {
             throw new \Exception('Error connecting to the database');

@@ -33,11 +33,4 @@ interface ManagerInterface
      * @return mixed
      */
     public function find($id);
-
-    /**
-     * Search all entity data in the DB
-     * @param $entityName
-     * @return array
-     */
-    public function findAll();
 }

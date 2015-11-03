@@ -11,7 +11,9 @@ use Layer\Connector\Connector;
 class GrantManager implements ManagerInterface
 {
     private $connector;
-    public function __construct (Connector $connector){
+
+    public function __construct(Connector $connector)
+    {
         $this->connector = $connector;
     }
 
@@ -33,6 +35,7 @@ class GrantManager implements ManagerInterface
         $statement->bindValue(':granted', $entity['granted']);
         $statement->bindValue(':fund', $entity['fund']);
         $statement->bindValue(':project_id', $entity['project_id']);
+
         return $statement->execute();
     }
 
@@ -46,13 +49,13 @@ class GrantManager implements ManagerInterface
         $request = "UPDATE grants SET granted = :granted,
           fund = :fund,
           project_id = :project_id
-          WHERE id = :id"
-        ;
+          WHERE id = :id";
         $statement = $this->connector->connect()->prepare($request);
         $statement->bindValue(':granted', $grant['granted']);
         $statement->bindValue(':fund', $grant['fund']);
         $statement->bindValue(':project_id', $grant['project_id']);
         $statement->bindValue(':id', $id);
+
         return $statement->execute();
     }
 
@@ -65,6 +68,7 @@ class GrantManager implements ManagerInterface
     {
         $statement = $this->connector->connect()->prepare("DELETE FROM grants WHERE id = :id");
         $statement->bindValue(':id', $entity);
+
         return $statement->execute();
     }
 
@@ -77,6 +81,7 @@ class GrantManager implements ManagerInterface
         $statement = $this->connector->connect()->prepare("SELECT * FROM grants WHERE id= :id");
         $statement->bindValue(':id', $id);
         $statement->execute();
+
         return $this->generateStrForFetchedData($statement);
     }
 
@@ -87,6 +92,7 @@ class GrantManager implements ManagerInterface
     {
         $statement = $this->connector->connect()->prepare("SELECT * FROM grants");
         $statement->execute();
+
         return $this->generateStrForFetchedData($statement);
     }
 
@@ -94,7 +100,7 @@ class GrantManager implements ManagerInterface
      * @param $statement
      * @return array
      */
-    protected function generateStrForFetchedData ($statement)
+    protected function generateStrForFetchedData($statement)
     {
         $res = array();
         while ($tmpRecord = $statement->fetch()) {
@@ -102,11 +108,12 @@ class GrantManager implements ManagerInterface
         }
         $str = array();
         foreach ($res as $record) {
-            $str[] = 'Запись№ '. $record['id'].
-                '. Предоставленно: '. $record['granted'].
-                '. Фонд: '. $record['fund'].
-                '. Id проекта: '. $record['project_id']. '.';
+            $str[] = 'Запись№ '.$record['id'].
+                '. Предоставленно: '.$record['granted'].
+                '. Фонд: '.$record['fund'].
+                '. Id проекта: '.$record['project_id'].'.';
         }
+
         return $str;
     }
 }
