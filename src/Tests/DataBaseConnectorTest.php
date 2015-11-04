@@ -16,5 +16,4 @@ class DataBaseConnectorTest extends \PHPUnit_Framework_TestCase
         $this->assertClassHasStaticAttribute('dsn', 'Layer\Connector\DataBaseConnector');
     }
 
-
 }
