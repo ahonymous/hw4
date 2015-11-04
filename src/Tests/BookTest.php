@@ -16,6 +16,8 @@ class BookTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider attributesProvider
+     * @param $attr
+     * @param $obj
      */
 
     public function testAttributes($attr, $obj)
@@ -23,6 +25,17 @@ class BookTest extends \PHPUnit_Framework_TestCase
 
         $this->assertObjectHasAttribute($attr, $obj);
     }
+
+    /**
+     * @dataProvider instanceOfProvider
+     * @param $expected
+     * @param $obj
+     */
+    public function testInstanceOf($expected, $obj)
+    {
+        $this->assertInstanceOf($expected, $obj);
+    }
+
 
 
     public function attributesProvider() {
@@ -35,6 +48,15 @@ class BookTest extends \PHPUnit_Framework_TestCase
             ['updatedAt', new Book()],
             ['title', new Book()],
             ['price', new Book()]
+        ];
+    }
+
+    public function instanceOfProvider() {
+
+        return [
+
+            ['Entity\AbstractProduct', new Book()],
+            ['Entity\Book', new Book()]
         ];
     }
 }
