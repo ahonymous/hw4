@@ -1,4 +1,4 @@
-# HW4
+# HW4 [![Build Status](https://travis-ci.org/maximzh/hw4.svg?branch=develop)](https://travis-ci.org/maximzh/hw4)
 
 1. You should fork this repository.
 
@@ -23,3 +23,4 @@
 8. `After all the cutting points`, add link of your homework to the google doc.
 
 P.S. Set yourself config options to the config/config.php.dist and rename him on config/config.php
+
