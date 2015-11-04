@@ -24,6 +24,7 @@ class BookTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute($attr, $obj);
     }
 
+
     public function attributesProvider() {
 
         return [
