@@ -23,4 +23,4 @@
 8. `After all the cutting points`, add link of your homework to the google doc.
 
 P.S. Set yourself config options to the config/config.php.dist and rename him on config/config.php
-https://travis-ci.org/maximzh/hw4.svg?branch=develop
+
