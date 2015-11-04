@@ -21,5 +21,8 @@
         "php": ">=5.5.0",
         "ext-mysqlnd": "*",
         "twig/twig": "^2.0@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.0"
     }
 }
