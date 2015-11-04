@@ -17,6 +17,7 @@ class BookTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider attributesProvider
      */
+
     public function testAttributes($attr, $obj)
     {
 
