@@ -1,4 +1,4 @@
-# HW4
+# HW4 [![Build Status](https://travis-ci.org/maximzh/hw4.svg?branch=develop)](https://travis-ci.org/maximzh/hw4)
 
 1. You should fork this repository.
 
