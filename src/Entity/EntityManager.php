@@ -91,11 +91,6 @@ class EntityManager extends AbstractManager
      */
     public function insert($entity)
     {
-        echo '<pre>';
-        var_dump($entity);
-        echo '</pre>';
-        exit;
-
         $params = $this->entityParse($entity);
 
         $sql = $this->prepareSql($params);
