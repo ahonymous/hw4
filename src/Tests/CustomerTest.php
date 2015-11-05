@@ -15,22 +15,21 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider attributesProvider
      * @param $attr
-     * @param $obj
      */
-    public function testAttributes($attr, $obj)
+    public function testAttributes($attr)
     {
-
+        $obj = new Customer('John','Doe','username@something.com');
         $this->assertObjectHasAttribute($attr, $obj);
     }
 
     public function attributesProvider() {
 
         return [
-            ['firstName', new Customer('John','Doe','username@something.com')],
-            ['lastName', new Customer('John','Doe','username@something.com')],
-            ['email', new Customer('John','Doe','username@something.com')],
-            ['createdAt', new Customer('John','Doe','username@something.com')],
-            ['updatedAt', new Customer('John','Doe','username@something.com')]
+            ['firstName'],
+            ['lastName'],
+            ['email'],
+            ['createdAt'],
+            ['updatedAt']
         ];
     }
 }
