@@ -17,7 +17,6 @@ class BookTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider attributesProvider
      * @param $attr
-     * @param $obj
      */
 
     public function testAttributes($attr)
@@ -29,7 +28,6 @@ class BookTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider instanceOfProvider
      * @param $expected
-     * @param $obj
      */
     public function testInstanceOf($expected)
     {
@@ -37,7 +35,12 @@ class BookTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf($expected, $obj);
     }
 
+    public function testMethodsCount() {
 
+        $obj = new Book();
+        $methodsNumber = get_class_methods(get_class($obj));
+        $this->assertCount(14, $methodsNumber);
+    }
 
     public function attributesProvider() {
 

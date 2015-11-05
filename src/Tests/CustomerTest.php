@@ -22,6 +22,33 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute($attr, $obj);
     }
 
+    /**
+     * @param $expected
+     * @dataProvider methodProvider
+     */
+    public function testMethodExists($expected)
+    {
+        $obj = new Customer('John','Doe','username@something.com');
+        $this->assertTrue(method_exists($obj, $expected));
+    }
+
+    public function methodProvider()
+    {
+        return [
+            ['setFirstName'],
+            ['getFirstName'],
+            ['setLastName'],
+            ['getLastName'],
+            ['setEmail'],
+            ['getEmail'],
+            ['setCreatedAt'],
+            ['getCreatedAt'],
+            ['setUpdatedAt'],
+            ['getUpdatedAt']
+
+        ];
+    }
+
     public function attributesProvider() {
 
         return [

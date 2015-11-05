@@ -49,7 +49,6 @@ class FilesExistTest extends \PHPUnit_Framework_TestCase
             ['src/Views/templates/customers_delete.html.twig'],
             ['src/Views/templates/purchases.html.twig']
 
-
         ];
     }
 }
