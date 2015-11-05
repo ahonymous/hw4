@@ -3,80 +3,108 @@
 namespace Entity;
 
 use Layer\Manager\AbstractManager;
-use Layer\Connector\ConnectorInterface;
+use Layer\Connector\Connector;
+use User\User;
 use PDO;
 
 /**
  * Class EntityManager
  * @package Entity
  */
-class EntityManager extends AbstractManager implements ConnectorInterface
+class EntityManager extends AbstractManager
 {
-
     /**
-     * @return PDO
+     * @var PDO
      */
-    public function connect()
-    {
-        require __DIR__ . '/../../config/config.php';
+    private $connection;
 
-        return new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['db_name'] . '', $config['db_user'], $config['db_password']);
+    public function __construct()
+    {
+        $this->connection = new Connector();
+        $this->connection = $this->connection->connect();
+
+    }
+
+    public function __destruct()
+    {
+        $this->connection = null;
     }
 
     public function db_init(){
 
-        $connection = $this->connect();
-
-        $query = $connection->query("CREATE TABLE `user` (id INT(11) AUTO_INCREMENT PRIMARY KEY, username VARCHAR(60), createdat INT(11), updatedat INT(11), deletedat INT(11) )");
-        $query = $connection->query("CREATE TABLE `product` (id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60), price INT(11), createdat INT(11), updatedat INT(11), deletedat INT(11) )");
-        $query = $connection->query("CREATE TABLE `order` (id INT(11) AUTO_INCREMENT PRIMARY KEY, userid INT(11), productid INT(11), price INT(11))");
+        $query = $this->connection->query("CREATE TABLE `user` (id INT(11) AUTO_INCREMENT PRIMARY KEY, username VARCHAR(60), createdat INT(11), updatedat INT(11), deletedat INT(11) )");
+        $query = $this->connection->query("CREATE TABLE `product` (id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60), price INT(11), createdat INT(11), updatedat INT(11), deletedat INT(11) )");
+        $query = $this->connection->query("CREATE TABLE `order` (id INT(11) AUTO_INCREMENT PRIMARY KEY, userid INT(11), productid INT(11), price INT(11))");
 
     }
 
-
     /**
-     * @param $db
-     * @return null
+     * @param Object $en
+     * @return array
      */
-    public function connectClose($db)
+    public function entityParse($en)
     {
-        return $this->connection = null;
+        $entityArray = [];
+
+        $entity = new \ReflectionClass($en);
+        $entityArray['entity'] = $entity->getShortName();
+
+        $entityProperties = $entity->getProperties();
+
+        foreach ($entityProperties as $property){
+            $getProperty = $entity->getProperty($property->name);
+            $getProperty->setAccessible(true);
+            $val = $getProperty->getValue($en);
+
+            $entityArray['properties'][$property->name] = $val;
+        }
+
+        return $entityArray;
     }
 
     /**
-     * @param mixed $entity
-     * @return \PDOStatement
+     * @param array $params
+     * @return string
+     */
+    public function prepareSql($params = [])
+    {
+        $values = [];
+        $fields = [];
+
+        foreach ($params['properties'] as $key => $value){
+            if ($value != '') {
+                $values[] = "'" . $value . "'";
+                $fields[] = "`" . $key . "`";
+            }
+        }
+
+        $table = strtolower($params['entity']);
+
+        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $table, implode($fields, ','), implode($values, ','));
+
+        return $sql;
+    }
+
+    /**
+     * @param array $entity
+     * @return int
      */
     public function insert($entity)
     {
-        $values = [];
-        $methods = get_class_methods($entity);
-        foreach ($methods as $method) {
-            if (strpos($method, 'get') === 0) {
-                $values[strtolower(substr($method, 3))] = $entity->$method();
-            }
-        }
+        echo '<pre>';
+        var_dump($entity);
+        echo '</pre>';
+        exit;
 
+        $params = $this->entityParse($entity);
 
-        $connection = $this->connect();
-        $table = new \ReflectionClass($entity);
-        $table = strtolower($table->getShortName());
+        $sql = $this->prepareSql($params);
 
-        $field = [];
-        $vals = [];
-
-        foreach ($values as $key => $val){
-            if ($val) {
-                $field[] = $key;
-                $vals[] = $connection->quote($val);
-            }
-        }
-
-        $query = $connection->prepare("INSERT INTO `$table` (`" . implode($field, "`,`") . "`) VALUES (" . implode($vals, ",") . ")");
+        $query = $this->connection->prepare($sql);
 
         $query->execute();
 
-        return $connection->lastInsertId();
+        return (int)$this->connection->lastInsertId();
 
     }
 
@@ -94,8 +122,6 @@ class EntityManager extends AbstractManager implements ConnectorInterface
             }
         }
 
-        $connection = $this->connect();
-
         $table = new \ReflectionClass($entity);
         $table = strtolower($table->getShortName());
 
@@ -111,7 +137,7 @@ class EntityManager extends AbstractManager implements ConnectorInterface
 
         $id = $values['id'];
 
-        $query = $connection->prepare("UPDATE $table SET $update WHERE id=$id");
+        $query = $this->connection->prepare("UPDATE $table SET $update WHERE id=$id");
 
         return $query->execute();
     }
@@ -125,9 +151,9 @@ class EntityManager extends AbstractManager implements ConnectorInterface
 
         $table = $entity['entity'];
         $id = $entity['id'];
-        $connection = $this->connect();
+
         $sql = "DELETE FROM `$table` WHERE `id`=" . $id;
-        $result = $connection->query($sql);
+        $result = $this->connection->query($sql);
 
         return $result;
 
@@ -140,9 +166,7 @@ class EntityManager extends AbstractManager implements ConnectorInterface
      */
     public function find($entityName, $id)
     {
-
-        $connection = $this->connect();
-        $query = $connection->query("SELECT * FROM $entityName WHERE id=$id");
+        $query = $this->connection->query("SELECT * FROM $entityName WHERE id=$id");
         $query->execute();
 
         return $query->fetch();
@@ -155,12 +179,10 @@ class EntityManager extends AbstractManager implements ConnectorInterface
     public function findAll($entityName)
     {
 
-        $connection = $this->connect();
-
         if ($entityName == 'order'){
-            $query = $connection->prepare("SELECT O.id, U.username, P.name, P.price FROM `order` AS O LEFT JOIN user AS U ON U.id = O.userid LEFT JOIN product AS P ON P.id = O.productid");
+            $query = $this->connection->prepare("SELECT O.id, U.username, P.name, P.price FROM `order` AS O LEFT JOIN user AS U ON U.id = O.userid LEFT JOIN product AS P ON P.id = O.productid");
         } else {
-            $query = $connection->prepare("SELECT * FROM $entityName");
+            $query = $this->connection->prepare("SELECT * FROM $entityName");
         }
 
         $query->execute();

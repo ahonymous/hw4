@@ -49,8 +49,8 @@
 
                 $user  = new User();
                 $user->setUserName($_POST['name']);
-                $date = new DateTime('now');
-                $user->setCreatedAt($date->getTimestamp());
+//                $date = new DateTime('now');
+                $user->setCreatedAt(1111111111);
 
 //                $user = array(
 //                    'entity' => 'users',

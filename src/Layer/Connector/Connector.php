@@ -3,76 +3,30 @@
 namespace Layer\Connector;
 
 use Layer\Connector\ConnectorInterface;
+use PDO;
 
 class Connector implements ConnectorInterface
 {
-
     /**
-     * @var
+     * @var \PDO
      */
-    private $host;
-
-    /**
-     * @var
-     */
-    private $db;
-
-    /**
-     * @var
-     */
-    private $user;
-
-    /**
-     * @var
-     */
-    private $password;
+    private $connect;
 
     /**
      * @return \PDO
      */
     public function connect()
     {
-        return new \PDO('mysql:host='.$this->host.';dbname='.$this->db.'', $this->user, $this->password);
-    }
+        require __DIR__ . '/../../../config/autoload.php';
 
-    public function connectClose($db)
-    {
-        // TODO: Implement connectClose() method.
+        return new \PDO('mysql:host='. $config['host'] .';dbname='.$config['db_name'].'', $config['db_user'], $config['db_password']);
     }
 
     /**
-     * @param mixed $host
+     * @return null
      */
-    public function setHost($host)
+    public function connectClose()
     {
-        $this->host = $host;
+//        return $this->connection = null;
     }
-
-    /**
-     * @param mixed $db
-     */
-    public function setDb($db)
-    {
-        $this->db = $db;
-    }
-
-    /**
-     * @param mixed $user
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-
-
-
-
 }
