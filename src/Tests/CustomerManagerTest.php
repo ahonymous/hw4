@@ -17,7 +17,8 @@ class CustomerManagerTest extends \PHPUnit_Framework_TestCase
      * @dataProvider instanceOfProvider
      * @param $expected
      */
-    public function testInstanceOf($expected) {
+    public function testInstanceOf($expected)
+    {
 
         $pdoStub = $this->getMockBuilder('\PDO')->disableOriginalConstructor()->getMock();
 
@@ -25,7 +26,19 @@ class CustomerManagerTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function instanceOfProvider() {
+    public function testFindAll()
+    {
+        $pdoStub = $this->getMockBuilder('\PDO')->disableOriginalConstructor()->getMock();
+        $statementStub = $this->getMockBuilder('\PDOStatement')->disableOriginalConstructor()->getMock();
+        $statementStub->method('bindValue')->willReturn($statementStub);
+        $statementStub->method('execute')->willReturn($statementStub);
+        $pdoStub->method('prepare')->willReturn($statementStub);
+        $manager = new CustomerManager($pdoStub);
+        $this->assertTrue(is_array($manager->findAll()));
+    }
+
+    public function instanceOfProvider()
+    {
 
         return [
 

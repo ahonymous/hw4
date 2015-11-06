@@ -35,14 +35,9 @@ class BookTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf($expected, $obj);
     }
 
-    public function testMethodsCount() {
 
-        $obj = new Book();
-        $methodsNumber = get_class_methods(get_class($obj));
-        $this->assertCount(14, $methodsNumber);
-    }
-
-    public function attributesProvider() {
+    public function attributesProvider()
+    {
 
         return [
             ['isbn'],
@@ -55,7 +50,8 @@ class BookTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function instanceOfProvider() {
+    public function instanceOfProvider()
+    {
 
         return [
 

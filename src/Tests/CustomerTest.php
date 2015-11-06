@@ -18,7 +18,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAttributes($attr)
     {
-        $obj = new Customer('John','Doe','username@something.com');
+        $obj = new Customer('John', 'Doe', 'username@something.com');
         $this->assertObjectHasAttribute($attr, $obj);
     }
 
@@ -28,7 +28,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
      */
     public function testMethodExists($expected)
     {
-        $obj = new Customer('John','Doe','username@something.com');
+        $obj = new Customer('John', 'Doe', 'username@something.com');
         $this->assertTrue(method_exists($obj, $expected));
     }
 
@@ -49,7 +49,8 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function attributesProvider() {
+    public function attributesProvider()
+    {
 
         return [
             ['firstName'],

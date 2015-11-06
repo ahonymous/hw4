@@ -20,7 +20,8 @@ class FilesExistTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($pathToFile);
     }
 
-    public function filesProvider() {
+    public function filesProvider()
+    {
 
         return [
             ['src/Entity/AbstractProduct.php'],

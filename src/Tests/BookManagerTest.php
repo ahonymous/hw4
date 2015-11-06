@@ -17,7 +17,8 @@ class BookManagerTest extends \PHPUnit_Framework_TestCase
      * @dataProvider instanceOfProvider
      * @param $expected
      */
-    public function testInstanceOf($expected) {
+    public function testInstanceOf($expected)
+    {
 
         $pdoStub = $this->getMockBuilder('\PDO')->disableOriginalConstructor()->getMock();
 
@@ -25,7 +26,8 @@ class BookManagerTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function instanceOfProvider() {
+    public function instanceOfProvider()
+    {
 
         return [
 
