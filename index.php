@@ -8,6 +8,7 @@ use Models\Stuff;
 use Models\Order;
 
 if (isset($_GET['action'])){
+    
     switch ($_GET['action']){
         case 'users':
             if ($_GET['subaction']){
@@ -161,7 +162,9 @@ if (isset($_GET['action'])){
             break;
     }
 } else {
+
     $smarty->display('index.tpl');
+
 }
 
 
