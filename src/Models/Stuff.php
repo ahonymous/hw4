@@ -15,7 +15,11 @@ use Layer\Connector\Connector;
 class Stuff implements ManagerInterface
 {
     protected $table = 'stuffs';
+    protected $pdo;
 
+    public function __construct($db){
+        $this->pdo = $db;
+    }
     /**
      * Insert new entity data to the DB
      * @param mixed $entity
@@ -24,9 +28,7 @@ class Stuff implements ManagerInterface
     public function insert($entity){
         if (isset($entity['name']) && isset($entity['customer_id']) && isset($entity['price'])){
 
-            $pdo = new Connector();
-
-            $ins = $pdo->db->prepare("INSERT INTO `".$this->table."` (`name`, `customer_id`,`description`, `price`) VALUES (:s_name, :c_id, :decr, :price)");
+            $ins = $this->pdo->db->prepare("INSERT INTO `".$this->table."` (`name`, `customer_id`,`description`, `price`) VALUES (:s_name, :c_id, :decr, :price)");
             $ins->bindValue(':s_name', $entity['name']);
             $ins->bindValue(':c_id', $entity['customer_id']);
             $ins->bindValue(':decr', $entity['description']);
@@ -34,7 +36,7 @@ class Stuff implements ManagerInterface
 
             $result = $ins->execute();
             if ($result){
-                return $pdo->db->lastInsertId();
+                return $this->pdo->db->lastInsertId();
             } else {
                 return false;
             }
@@ -52,9 +54,7 @@ class Stuff implements ManagerInterface
     public function update($entity){
         if (isset($entity['name']) && isset($entity['price'])){
 
-            $pdo = new Connector();
-
-            $update = $pdo->db->prepare("UPDATE `".$this->table."` SET name=:name, price=:price, description=:descr WHERE id=:s_id ");
+            $update = $this->pdo->db->prepare("UPDATE `".$this->table."` SET name=:name, price=:price, description=:descr WHERE id=:s_id ");
             $update->bindValue(':price', $entity['price']);
             $update->bindValue(':descr', $entity['description']);
             $update->bindValue(':s_id', $entity['id']);
@@ -73,9 +73,7 @@ class Stuff implements ManagerInterface
      */
     public function remove($entity){
 
-        $pdo = new Connector();
-
-        $delete = $pdo->db->prepare("DELETE FROM `".$this->table."` WHERE id=:s_id");
+        $delete = $this->pdo->db->prepare("DELETE FROM `".$this->table."` WHERE id=:s_id");
         $delete->bindValue(':s_id', $entity['id']);
 
         return $delete->execute();
@@ -89,9 +87,7 @@ class Stuff implements ManagerInterface
      */
     public function find($entityName, $id){
 
-        $pdo = new Connector();
-
-        $find = $pdo->db->prepare("SELECT * FROM `".$this->table."` WHERE `:colm`=:s_id");
+        $find = $this->pdo->db->prepare("SELECT * FROM `".$this->table."` WHERE `:colm`=:s_id");
         $find->bindValue(':s_id', $id);
         $find->bindVAlue(':colm', $entityName);
         $find->execute();
@@ -108,16 +104,14 @@ class Stuff implements ManagerInterface
      */
     public function findAll(){
 
-        $pdo = new Connector();
-
-        $find = $pdo->db->query("SELECT * FROM `".$this->table."`");
+        $find = $this->pdo->db->query("SELECT * FROM `".$this->table."`");
         $stuffs = $find->fetchAll();
 
         if ($stuffs){
 
             foreach ($stuffs as $stuff=>$value){
 
-                $customer = new Customer();
+                $customer = new Customer($this->pdo);
                 $customerInfo = $customer->find('name', $value['id']);
                 $stuffs[$stuff]['customer_name'] = $customerInfo;
 
@@ -139,8 +133,7 @@ class Stuff implements ManagerInterface
      */
     public function findBy($entityName, $criteria = []){
 
-        $pdo = new Connector();
-        $find = $pdo->db->query("SELECT :colm FROM `".$this->table."` WHERE `customer_id`=:c_id AND price BETWEEN (:min_price and :max_price)");
+        $find = $this->pdo->db->query("SELECT :colm FROM `".$this->table."` WHERE `customer_id`=:c_id AND price BETWEEN (:min_price and :max_price)");
         $find->bindValue(':c_id', $entityName);
         $find->bindValue(':min_price', $criteria['min']);
         $find->bindValue(':max_price', $criteria['max']);

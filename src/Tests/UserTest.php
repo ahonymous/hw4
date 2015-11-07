@@ -8,21 +8,44 @@
 
 namespace Tests;
 
-use Models;
-
-
-class UserTest extends \PHPUnit_Framework_TestCase
+class ConnectTest extends \PHPUnit_Framework_TestCase
 {
-    public function testLetsStart(){
-        $stack = array();
-        $this->assertEquals(1, count($stack));
 
-        array_push($stack, 'foo');
-        $this->assertEquals('foo', $stack[count($stack)-1]);
-        $this->assertEquals(1, count($stack));
-
-        $this->assertEquals('foo', array_pop($stack));
-        $this->assertEquals(0, count($stack));
+    public function testConfigExists(){
+        $this->assertFileExists('./config/config.php');
     }
 
+    public function MockingPDO(){;
+        $MockPDO = $this->getMockBuilder('PDO')
+                        ->disableOriginalConstructor()
+                        ->getMock();
+
+        return $MockPDO;
+    }
+
+
+    public function testAttributesTable(){
+        $this->assertClassHasAttribute('table','Models\User');
+        $this->assertClassHasAttribute('table','Models\Customer');
+        $this->assertClassHasAttribute('table','Models\Stuff');
+
+    }
+
+    public function testFind(){
+        $mockUser = $this->getMockBuilder('Models\User')
+                         ->disableOriginalConstructor()
+                         ->getMock();
+
+        $result = array('id'=>'1',
+                        'name'=>'somename',
+                        'email'=>'some@email.com');
+
+        $mockUser->method('find')
+            ->will($this->returnValue($result));
+
+        $this->assertArrayHasKey('id', $mockUser->find('email','some@email.com'));
+        $this->assertArrayHasKey('id', $mockUser->find('name','somename'));
+        $this->assertArrayHasKey('id', $mockUser->find('id','1'));
+
+    }
 }

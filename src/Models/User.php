@@ -13,8 +13,12 @@ use Layer\Manager\AbstractManager;
 
 class User extends AbstractManager
 {
-
     protected $table = 'users';
+    protected $pdo;
+
+    public function __construct($db){
+        $this->pdo = $db;
+    }
 
     /**
  * Insert new entity data to the DB
@@ -23,17 +27,14 @@ class User extends AbstractManager
  */
     public function insert($entity){
         if (isset($entity['name'])){
-
-            $pdo = new Connector();
-
-            $ins = $pdo->db->prepare("INSERT INTO `".$this->table."` (`name`, `password`,`email`, `data_reg`) VALUES (:u_name, MD5(:u_password), :u_mail, NOW())");
+            $ins = $this->pdo->prepare("INSERT INTO `".$this->table."` (`name`, `password`,`email`, `data_reg`) VALUES (:u_name, MD5(:u_password), :u_mail, NOW())");
             $ins->bindValue(':u_name', $entity['name']);
             $ins->bindValue(':u_password', $entity['password']);
             $ins->bindValue(':u_mail', $entity['email']);
 
             $result = $ins->execute();
             if ($result){
-                return $pdo->db->lastInsertId();
+                return $this->pdo->lastInsertId();
             } else {
                 return false;
             }
@@ -51,9 +52,7 @@ class User extends AbstractManager
     public function update($entity){
         if (isset($entity['name'])){
 
-            $pdo = new Connector();
-
-            $update = $pdo->db->prepare("UPDATE `".$this->table."` SET name=:name, email=:email WHERE id=:u_id ");
+            $update = $this->pdo->db->prepare("UPDATE `".$this->table."` SET name=:name, email=:email WHERE id=:u_id ");
             $update->bindValue(':u_id', $entity['id']);
             $update->bindValue(':email', $entity['email']);
             $update->bindValue(':name', $entity['name']);
@@ -73,7 +72,7 @@ class User extends AbstractManager
 
         $pdo = new Connector();
 
-        $delete = $pdo->db->prepare("DELETE FROM `".$this->table."` WHERE id=:u_id");
+        $delete = $this->pdo->db->prepare("DELETE FROM `".$this->table."` WHERE id=:u_id");
         $delete->bindValue(':u_id', $entity);
 
         return $delete->execute();
@@ -87,12 +86,11 @@ class User extends AbstractManager
      */
     public function find($entityName, $id){
 
-        $pdo = new Connector();
-
-        $find = $pdo->db->prepare("SELECT :colm FROM `".$this->table."` WHERE `id`=:u_id");
+        $find = $this->pdo->db->prepare("SELECT :colm FROM `".$this->table."` WHERE `id`=:u_id");
         $find->bindValue(':u_id', $id);
         $find->bindVAlue(':colm', $entityName);
         $find->execute();
+
         $result = $find->fetch();
 
         return $result;
@@ -106,9 +104,7 @@ class User extends AbstractManager
      */
     public function findAll(){
 
-        $pdo = new Connector();
-
-        $find = $pdo->db->query("SELECT * FROM `".$this->table."`");
+        $find = $this->pdo->db->query("SELECT * FROM `".$this->table."`");
         $result = $find->fetchAll();
         return $result;
 
@@ -122,8 +118,7 @@ class User extends AbstractManager
      */
     public function findBy($entityName, $criteria = []){
 
-        $pdo = new Connector();
-        $find = $pdo->db->query("SELECT :colm FROM `".$this->table."` WHERE `email`=:u_mail AND name=:u_name");
+        $find = $this->pdo->db->query("SELECT :colm FROM `".$this->table."` WHERE `email`=:u_mail AND name=:u_name");
         $find->bindValue(':colm', $entityName);
         $find->bindValue(':u_name', $criteria['name']);
         $find->bindValue(':u_mail', $criteria['email']);
