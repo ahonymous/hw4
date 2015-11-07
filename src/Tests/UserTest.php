@@ -48,4 +48,5 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('id', $mockUser->find('id','1'));
 
     }
+
 }
