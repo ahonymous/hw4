@@ -13,6 +13,21 @@ class Connector implements ConnectorInterface
     private $connect;
 
     /**
+     * @var
+     */
+    private $db;
+
+    /**
+     * @var
+     */
+    private $user;
+
+    /**
+     * @var
+     */
+    private $password;
+
+    /**
      * @return \PDO
      */
     public function connect()
@@ -29,4 +44,5 @@ class Connector implements ConnectorInterface
     {
 //        return $this->connection = null;
     }
+
 }

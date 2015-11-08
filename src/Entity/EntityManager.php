@@ -3,15 +3,15 @@
 namespace Entity;
 
 use Layer\Manager\AbstractManager;
-use Layer\Connector\Connector;
-use User\User;
+use Layer\Connector\ConnectorInterface;
 use PDO;
+use Layer\Connector\Connector;
 
 /**
  * Class EntityManager
  * @package Entity
  */
-class EntityManager extends AbstractManager
+class EntityManager extends AbstractManager implements ConnectorInterface
 {
     /**
      * @var PDO
@@ -38,28 +38,14 @@ class EntityManager extends AbstractManager
 
     }
 
+
     /**
-     * @param Object $en
-     * @return array
+     * @param $db
+     * @return null
      */
-    public function entityParse($en)
+    public function connectClose($db)
     {
-        $entityArray = [];
-
-        $entity = new \ReflectionClass($en);
-        $entityArray['entity'] = $entity->getShortName();
-
-        $entityProperties = $entity->getProperties();
-
-        foreach ($entityProperties as $property){
-            $getProperty = $entity->getProperty($property->name);
-            $getProperty->setAccessible(true);
-            $val = $getProperty->getValue($en);
-
-            $entityArray['properties'][$property->name] = $val;
-        }
-
-        return $entityArray;
+        return $this->connection = null;
     }
 
     /**
@@ -124,7 +110,7 @@ class EntityManager extends AbstractManager
 
         foreach ($values as $key => $val){
             if ($val && $key != 'id') {
-                $update .= $key . ' = ' . $connection->quote($val) . ',';
+                $update .= $key . ' = ' . $this->connection->quote($val) . ',';
             }
         }
 
@@ -183,7 +169,6 @@ class EntityManager extends AbstractManager
         $query->execute();
 
         return $query->fetchAll();
-
     }
 
     /**
@@ -202,8 +187,7 @@ class EntityManager extends AbstractManager
                 $value = $criteria['user_name'];
             }
 
-            $connection = $this->connect();
-            $query = $connection->query("SELECT * FROM $entityName WHERE $field IN ($value)");
+            $query = $this->connection->query("SELECT * FROM $entityName WHERE $field IN ($value)");
 
             $query->execute();
 
