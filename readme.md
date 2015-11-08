@@ -1,5 +1,3 @@
-https://travis-ci.org/Roma48/hw4.svg?branch=tests
-
 # HW4
 
 1. You should fork this repository.
