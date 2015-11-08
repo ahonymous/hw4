@@ -71,6 +71,7 @@ class EntityManager extends AbstractManager implements ConnectorInterface
         return $sql;
     }
 
+
     /**
      * @param array $entity
      * @return int
