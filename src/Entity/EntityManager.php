@@ -11,61 +11,81 @@ use Layer\Connector\Connector;
  * Class EntityManager
  * @package Entity
  */
-class EntityManager extends AbstractManager
+class EntityManager extends AbstractManager implements ConnectorInterface
 {
-
     /**
-     * @var
+     * @var PDO
      */
     private $connection;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->connection = new Connector();
         $this->connection = $this->connection->connect();
+
     }
 
-    public function __destruct(){
+    public function __destruct()
+    {
         $this->connection = null;
     }
 
     public function db_init(){
+
         $query = $this->connection->query("CREATE TABLE `user` (id INT(11) AUTO_INCREMENT PRIMARY KEY, username VARCHAR(60), createdat INT(11), updatedat INT(11), deletedat INT(11) )");
         $query = $this->connection->query("CREATE TABLE `product` (id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60), price INT(11), createdat INT(11), updatedat INT(11), deletedat INT(11) )");
         $query = $this->connection->query("CREATE TABLE `order` (id INT(11) AUTO_INCREMENT PRIMARY KEY, userid INT(11), productid INT(11), price INT(11))");
+
+    }
+
+
+    /**
+     * @param $db
+     * @return null
+     */
+    public function connectClose($db)
+    {
+        return $this->connection = null;
     }
 
     /**
-     * @param mixed $entity
-     * @return \PDOStatement
+     * @param array $params
+     * @return string
+     */
+    public function prepareSql($params = [])
+    {
+        $values = [];
+        $fields = [];
+
+        foreach ($params['properties'] as $key => $value){
+            if ($value != '') {
+                $values[] = "'" . $value . "'";
+                $fields[] = "`" . $key . "`";
+            }
+        }
+
+        $table = strtolower($params['entity']);
+
+        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $table, implode($fields, ','), implode($values, ','));
+
+        return $sql;
+    }
+
+    /**
+     * @param array $entity
+     * @return int
      */
     public function insert($entity)
     {
-        $values = [];
-        $methods = get_class_methods($entity);
-        foreach ($methods as $method) {
-            if (strpos($method, 'get') === 0) {
-                $values[strtolower(substr($method, 3))] = $entity->$method();
-            }
-        }
+        $params = $this->entityParse($entity);
 
-        $table = new \ReflectionClass($entity);
-        $table = strtolower($table->getShortName());
+        $sql = $this->prepareSql($params);
 
-        $field = [];
-        $vals = [];
-
-        foreach ($values as $key => $val){
-            if ($val) {
-                $field[] = $key;
-                $vals[] = $this->connection->quote($val);
-            }
-        }
-
-        $query = $this->connection->prepare("INSERT INTO `$table` (`" . implode($field, "`,`") . "`) VALUES (" . implode($vals, ",") . ")");
+        $query = $this->connection->prepare($sql);
 
         $query->execute();
 
-        return $this->connection->lastInsertId();
+        return (int)$this->connection->lastInsertId();
 
     }
 
@@ -112,9 +132,9 @@ class EntityManager extends AbstractManager
 
         $table = $entity['entity'];
         $id = $entity['id'];
-        $connection = $this->connect();
+
         $sql = "DELETE FROM `$table` WHERE `id`=" . $id;
-        $result = $connection->query($sql);
+        $result = $this->connection->query($sql);
 
         return $result;
 
@@ -139,6 +159,7 @@ class EntityManager extends AbstractManager
      */
     public function findAll($entityName)
     {
+
         if ($entityName == 'order'){
             $query = $this->connection->prepare("SELECT O.id, U.username, P.name, P.price FROM `order` AS O LEFT JOIN user AS U ON U.id = O.userid LEFT JOIN product AS P ON P.id = O.productid");
         } else {
