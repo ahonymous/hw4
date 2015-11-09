@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Roma48/hw4.svg?branch=tests)](https://travis-ci.org/Roma48/hw4)
+
 # HW4
 
 1. You should fork this repository.
