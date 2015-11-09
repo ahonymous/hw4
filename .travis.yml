@@ -7,6 +7,6 @@ before_script:
   - composer install
 
 script:
-  - phpunit
+  - php phpunit
 
 sudo: required
