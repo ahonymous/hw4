@@ -5,7 +5,6 @@ namespace Tests;
 use Entity\EntityManager;
 use User\User;
 use Composer\Autoload;
-use Layer\Connector\Connector;
 
 class EntityManagerTest extends \PHPUnit_Framework_TestCase
 {

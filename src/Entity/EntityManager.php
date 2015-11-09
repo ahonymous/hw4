@@ -16,8 +16,8 @@ class EntityManager extends AbstractManager
     private $connection;
     public function __construct()
     {
-//        $this->connection = new Connector();
-//        $this->connection = $this->connection->connect();
+        $this->connection = new Connector();
+        $this->connection = $this->connection->connect();
     }
     public function __destruct()
     {
