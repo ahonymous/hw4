@@ -15,7 +15,7 @@ interface OrderInterface
      * @param $post
      * @return mixed
      */
-    public function addOrder($post);
+    public function addRegisterOrder($post);
 
 
     /** Get order by ID

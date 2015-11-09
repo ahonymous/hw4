@@ -19,33 +19,36 @@ class Order implements OrderInterface
     public function __construct($db){
         $this->pdo = $db;
     }
-    /** Add new order
-     * @param $post
-     * @return mixed
-     */
-    public function addOrder($post){
 
 
+    public function addRegisterOrder($post){
         $addOrder = $this->pdo->db->prepare("INSERT INTO `orders` (`customer_id`, user_id, date) VALUES (:c_id, :u_id, NOW())");
         $addOrder->bindValue(':u_id', $post['user_id']);
         $addOrder->bindValue(':c_id', $post['customer_id']);
         $addOrder->execute();
         $order_id = $this->pdo->db->lastInsertId();
-
         if ($order_id){
+            $this->addOrderSutuffs($post['stuffs'],$order_id);
+        } else {
+            return false;
+        }
 
-            foreach ($post['stuffs'] as $stuff_id){
+    }
+
+    /** Add new order
+     * @param $post
+     * @return mixed
+     */
+    public function addOrderSutuffs($stuffs,$order_id){
+
+       foreach ($stuffs as $stuff_id){
 
                 $addStuffOrder = $this->pdo->db->prepare("INSERT INTO `orders_stuffs` (`order_id`, stuff_id) VALUES (:o_id, :s_id)");
                 $addStuffOrder->bindValue(':o_id', $order_id);
                 $addStuffOrder->bindValue(':s_id', $stuff_id);
                 $addStuffOrder->execute();
-            }
-
-            return true;
-        } else {
-            return false;
-        }
+       }
+        return true;
     }
 
 
@@ -75,7 +78,12 @@ class Order implements OrderInterface
         $dellOrder = $this->pdo->db->prepare("SELECT * FROM `orders` WHERE `id`=:o_id");
         $dellOrder->bindValue(':o_id', $id);
 
-        return $dellOrder->execute();
+        $deleting = $dellOrder->execute();
+        if ($deleting){
+            return 'Order was deleted';
+        } else {
+            return false;
+        }
 
     }
 

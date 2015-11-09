@@ -24,6 +24,8 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
     }
 
 
+
+
     public function testAttributesTable(){
         $this->assertClassHasAttribute('table','Models\User');
         $this->assertClassHasAttribute('table','Models\Customer');
@@ -31,22 +33,74 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testFind(){
+    /**
+     * @dataProvider userDate
+     */
+    public function testFind($userData){
         $mockUser = $this->getMockBuilder('Models\User')
                          ->disableOriginalConstructor()
                          ->getMock();
 
-        $result = array('id'=>'1',
-                        'name'=>'somename',
-                        'email'=>'some@email.com');
 
         $mockUser->method('find')
-            ->will($this->returnValue($result));
+            ->will($this->returnValue($userData));
 
         $this->assertArrayHasKey('id', $mockUser->find('email','some@email.com'));
         $this->assertArrayHasKey('id', $mockUser->find('name','somename'));
-        $this->assertArrayHasKey('id', $mockUser->find('id','1'));
+
 
     }
+
+    /**
+     * @dataProvider orderInfo
+     */
+    public function testAddOrderSutuffs($orderInfo){
+        $mockOrder = $this->getMockBuilder('Models\Order')
+                          ->disableOriginalConstructor()
+                          ->getMock();
+
+        $mockOrder->method('addOrderSutuffs')
+            ->will($this->returnValue(true));
+
+        $this->assertTrue($mockOrder->addOrderSutuffs($orderInfo[0],$orderInfo[1]));
+    }
+
+    
+
+
+
+    public function orderInfo(){
+        return array(
+            [
+                [1,2,3,4,5], 77,
+            ],
+            [
+                [7,14,43,54], 54,
+            ],
+        );
+    }
+
+
+
+
+    public function userDate(){
+        return array(
+            [
+               [
+                   'id'=>'1',
+                   'name'=>'somename_first',
+                   'email'=>'some1@email.com',
+               ],
+            ],
+            [
+                [
+                    'id'=>'2',
+                    'name'=>'somename_second',
+                    'email'=>'some2@email.com',
+                ],
+            ],
+        );
+    }
+
 
 }
