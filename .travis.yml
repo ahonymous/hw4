@@ -4,6 +4,6 @@ php:
   - 5.5
 
 before_script:
-   ln -s vendor/phpunit/phpunit/phpunit phpunit
+   ln -s vendor/phpunit/phpunit/phpunit bin/phpunit
 script:
-  - php phpunit
+  - phpunit
