@@ -6,4 +6,4 @@ php:
 before_script:
    ln -s vendor/phpunit/phpunit/phpunit bin/phpunit
 script:
-  - phpunit
+  - phpunit -c
