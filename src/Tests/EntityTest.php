@@ -12,8 +12,9 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testParseEntity()
     {
-        $mock = $this->getMockBuilder('Layer\Connector\Connector')
+        $testEntity = $this->getMockBuilder('Entity\EntityManager', ['entityParse'])
             ->disableOriginalConstructor()
+            ->setMethods(null)
             ->getMock();
 
 
@@ -22,7 +23,7 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
         $user->setCreatedAt('1111');
         $user->setUserName('Roma');
 
-        $testEntity = new EntityManager();
+//        $testEntity = new EntityManager();
 
         $this->assertInstanceOf('User\User' , $user);
 
