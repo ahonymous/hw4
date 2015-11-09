@@ -13,6 +13,7 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
     public function testParseEntity()
     {
         $mock = $this->getMockBuilder('Entity\EntityManager')
+            ->disableOriginalConstructor()
             ->setMethods(array('insert'))
             ->getMock();
 
