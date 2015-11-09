@@ -11,7 +11,7 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testParseEntity()
     {
-        $testEntity = $this->getMockBuilder('Entity\EntityManager', ['entityParse'])
+        $testEntity = $this->getMockBuilder('Entity\EntityManager')
             ->disableOriginalConstructor()
             ->setMethods(null)
             ->getMock();
@@ -53,7 +53,10 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $entityManager = new EntityManager();
+        $entityManager = $this->getMockBuilder('Entity\EntityManager')
+            ->disableOriginalConstructor()
+            ->setMethods(null)
+            ->getMock();
 
         $this->assertEquals("INSERT INTO user (`userName`,`createdAt`) VALUES ('Roma','1111')",
             $entityManager->prepareSql($queryArr)
