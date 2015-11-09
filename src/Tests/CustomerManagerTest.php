@@ -38,7 +38,6 @@ class CustomerManagerTest extends \PHPUnit_Framework_TestCase
 
         $manager = new CustomerManager($pdoStub);
 
-        $this->once()
         $this->assertTrue(is_array($manager->findAll()));
     }
 
