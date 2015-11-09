@@ -22,7 +22,7 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
         $user->setCreatedAt('1111');
         $user->setUserName('Roma');
 
-        $testEntity = new EntityManager($user);
+        $testEntity = new EntityManager();
 
         $this->assertInstanceOf('User\User' , $user);
 
