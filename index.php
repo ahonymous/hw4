@@ -2,19 +2,27 @@
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/conf/config.php';
 
+error_reporting(E_ALL | E_STRICT) ;
+ini_set('display_errors', 'On');
+
 use Models\User;
 use Models\Customer;
 use Models\Stuff;
 use Models\Order;
+use Layer\Connector\Connector;
 
-if (isset($_GET['action'])){
+$db = new Connector();
+
+phpinfo();
+/*if (isset($_GET['action'])){
+    
     switch ($_GET['action']){
         case 'users':
             if ($_GET['subaction']){
                 switch($_GET['subaction']){
 
                     case 'del':
-                        $user = new User();
+                        $user = new User($db);
                         $del = $user->remove($_POST['id']);
 
                         if ($del){
@@ -26,7 +34,7 @@ if (isset($_GET['action'])){
                         break;
 
                     case 'add':
-                        $user = new User();
+                        $user = new User($db);
                         $addUser = $user->insert($_POST);
 
                         if ($addUser){
@@ -40,7 +48,7 @@ if (isset($_GET['action'])){
                     break;
 
                     case 'find':
-                        $user = new User();
+                        $user = new User($db);
                         $find = $user->find($_POST['colm'], $_POST['id']);
 
                         $smarty->assign('user', $find);
@@ -50,7 +58,7 @@ if (isset($_GET['action'])){
 
                     default:
 
-                        $user = new User();
+                        $user = new User($db);
                         $allUsers = $user->findAll();
 
                         $smarty->assign('users',$allUsers);
@@ -65,7 +73,7 @@ if (isset($_GET['action'])){
                 switch($_GET['subaction']){
 
                     case 'del':
-                        $customer = new Customer();
+                        $customer = new Customer($db);
                         $del = $customer->remove($_POST['id']);
 
                         if ($del){
@@ -77,7 +85,7 @@ if (isset($_GET['action'])){
                         break;
 
                     case 'add':
-                        $customer = new Customer();
+                        $customer = new Customer($db);
                         $addCustomer = $customer->insert($_POST);
 
                         if ($addUser){
@@ -91,7 +99,7 @@ if (isset($_GET['action'])){
                         break;
 
                     case 'find':
-                        $customer = new Customer();
+                        $customer = new Customer($db);
                         $find = $customer->find($_POST['colm'], $_POST['id']);
 
                         $smarty->assign('custoner', $find);
@@ -101,11 +109,11 @@ if (isset($_GET['action'])){
 
                     default:
 
-                        $user = new User();
-                        $allUsers = $user->findAll();
+                        $customer = new Customer($db);
+                        $allUsers = $customer->findAll();
 
-                        $smarty->assign('users',$allUsers);
-                        $smarty->display('users.tpl');
+                        $smarty->assign('customers',$allUsers);
+                        $smarty->display('customers.tpl');
 
                         break;
                 }
@@ -117,7 +125,7 @@ if (isset($_GET['action'])){
                 switch($_GET['subaction']) {
 
                     case 'add_customer_stuffs':
-                        $stuff = new Stuff();
+                        $stuff = new Stuff($db);
                         $stuffs = $stuff->find('customer_id', $_POST['id']);
                         if ($stuffs) {
                             echo json_encode($stuffs);
@@ -126,7 +134,7 @@ if (isset($_GET['action'])){
                         }
                         break;
                     case 'add':
-                        $order = new Order();
+                        $order = new Order($db);
                         $result = $order->addOrder($_POST);
                         if ($result){
                             echo '<script type="text/javascript">';
@@ -137,14 +145,14 @@ if (isset($_GET['action'])){
                         }
                         break;
                     default:
-                        $order = new Order();
+                        $order = new Order($db);
                         $orders = $order->findAll();
 
                         $smarty->assign('orders', $orders);
                         $smarty->display('order.tpl');
                 }
             } else {
-                $order = new Order();
+                $order = new Order($db);
                 $orders = $order->findAll();
 
                 $smarty->assign('orders', $orders);
@@ -154,15 +162,17 @@ if (isset($_GET['action'])){
 
             break;
         case 'stuff':
-            $stuff = new Stuff();
+            $stuff = new Stuff($db);
             $allStufs = $stuff->findAll();
 
             $smarty->display('stuff.tpl');
             break;
     }
 } else {
+
     $smarty->display('index.tpl');
-}
+
+}*/
 
 
 

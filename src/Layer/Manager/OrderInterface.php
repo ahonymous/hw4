@@ -15,7 +15,7 @@ interface OrderInterface
      * @param $post
      * @return mixed
      */
-    public function addOrder($post);
+    public function registerOrder($post);
 
 
     /** Get order by ID
@@ -36,12 +36,6 @@ interface OrderInterface
      */
     public function lastOrders($count);
 
-    /** Find orders by user/customer ID
-     * @param $person_type
-     * @param $id
-     * @return mixed
-     */
-    public function findOrder ($person_type, $id);
 
 
 }

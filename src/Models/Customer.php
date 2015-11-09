@@ -12,16 +12,17 @@ use Layer\Connector\Connector;
 
 class Customer extends User
 {
+
     protected $table = 'customers';
+    protected $pdo;
 
     /** Summ all deals this customer
      * @param $id
      * @return mixed
      */
     public function allProfit($id){
-        $pdo = new Connector();
 
-        $find = $pdo->db->prepare("SELECT SUM(`value`) as `summ` FROM `orders` WHERE `customer_id`=:u_id");
+        $find = $this->pdo->db->prepare("SELECT SUM(`value`) as `summ` FROM `orders` WHERE `customer_id`=:u_id");
         $find->bindValue(':u_id', $id);
         $result = $find->execute();
 
@@ -31,9 +32,14 @@ class Customer extends User
     }
 
     public function profitBy($period, $id){
-        $pdo = new Connector();
 
-        $find = $pdo->db->prepare("SELECT SUM(`value`) as `summ` FROM `order` WHERE `customer_id`=u:id ");
+        $find = $this->pdo->db->prepare("SELECT SUM(`value`) as `summ` FROM `order` WHERE `customer_id`=u:id ");
+        $find->bindValue(':u_id', $id);
+        $result = $find->execute();
+
+        if ($result) {
+            return $find->fetch();
+        }
     }
 
 

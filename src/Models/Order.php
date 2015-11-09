@@ -14,33 +14,46 @@ use Layer\Connector\Connector;
 
 class Order implements OrderInterface
 {
+    protected $pdo;
+
+    public function __construct($db){
+        $this->pdo = $db;
+    }
+
+
+    public function registerOrder($post){
+        $addOrder = $this->pdo->db->prepare("INSERT INTO `orders` (`customer_id`, user_id, date) VALUES (:c_id, :u_id, NOW())");
+        $addOrder->bindValue(':u_id', $post['user_id']);
+        $addOrder->bindValue(':c_id', $post['customer_id']);
+        $addOrder->execute();
+        $order_id = $this->pdo->db->lastInsertId();
+        if ($order_id){
+            $addOrderSutuffs = $this->addOrderSutuffs($post['stuffs'],$order_id);
+            if ($addOrderSutuffs){
+                return 'Order confirmed';
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
     /** Add new order
      * @param $post
      * @return mixed
      */
-    public function addOrder($post){
-        $pdo = new Connector();
+    public function addOrderSutuffs($stuffs,$order_id){
 
-        $addOrder = $pdo->db->prepare("INSERT INTO `orders` (`customer_id`, user_id, date) VALUES (:c_id, :u_id, NOW())");
-        $addOrder->bindValue(':u_id', $post['user_id']);
-        $addOrder->bindValue(':c_id', $post['customer_id']);
-        $addOrder->execute();
-        $order_id = $pdo->db->lastInsertId();
+       foreach ($stuffs as $stuff_id){
 
-        if ($order_id){
-
-            foreach ($post['stuffs'] as $stuff_id){
-
-                $addStuffOrder = $pdo->db->prepare("INSERT INTO `orders_stuffs` (`order_id`, stuff_id) VALUES (:o_id, :s_id)");
+                $addStuffOrder = $this->pdo->db->prepare("INSERT INTO `orders_stuffs` (`order_id`, stuff_id) VALUES (:o_id, :s_id)");
                 $addStuffOrder->bindValue(':o_id', $order_id);
                 $addStuffOrder->bindValue(':s_id', $stuff_id);
                 $addStuffOrder->execute();
-            }
-
-            return true;
-        } else {
-            return false;
-        }
+       }
+        return true;
     }
 
 
@@ -49,9 +62,8 @@ class Order implements OrderInterface
      * @return mixed
      */
     public function getOrder($id){
-        $pdo = new Connector();
 
-        $getSingleOrder = $pdo->db->prepare("SELECT * FROM `orders` WHERE `id`=:o_id");
+        $getSingleOrder =  $this->pdo->db->prepare("SELECT * FROM `orders` WHERE `id`=:o_id");
         $getSingleOrder->bindValue(':o_id', $id);
         $result = $getSingleOrder->execute();
 
@@ -67,12 +79,16 @@ class Order implements OrderInterface
      * @return mixed
      */
     public function delOrder($id){
-        $pdo = new Connector();
 
-        $dellOrder = $pdo->db->prepare("SELECT * FROM `orders` WHERE `id`=:o_id");
+        $dellOrder = $this->pdo->db->prepare("SELECT * FROM `orders` WHERE `id`=:o_id");
         $dellOrder->bindValue(':o_id', $id);
 
-        return $dellOrder->execute();
+        $deleting = $dellOrder->execute();
+        if ($deleting){
+            return 'Order was deleted';
+        } else {
+            return false;
+        }
 
     }
 
@@ -81,9 +97,8 @@ class Order implements OrderInterface
      * @return mixed
      */
     public function lastOrders($count){
-        $pdo = new Connector();
 
-        $lastOrders = $pdo->db->prepare("SELECT * FROM `orders` BY id DESC LIMIT :counter ");
+        $lastOrders = $this->pdo->db->prepare("SELECT * FROM `orders` BY id DESC LIMIT :counter ");
         $lastOrders->bindValue(':coint', $count);
         $result = $lastOrders->execute();
 
@@ -104,20 +119,18 @@ class Order implements OrderInterface
      */
     public function findAll(){
 
-        $pdo = new Connector();
-
-        $find = $pdo->db->query("SELECT * FROM `orders`");
+        $find = $this->pdo->db->query("SELECT * FROM `orders`");
         $orders = $find->fetchAll();
 
         if ($orders){
 
             foreach ($orders as $order=>$value){
 
-                $user = new User();
+                $user = new User( $this->pdo);
                 $userInfo = $user->find('name',$value['user_id']);
                 $stuffs[$order]['user_name'] = $userInfo;
 
-                $customer = new Customer();
+                $customer = new Customer( $this->pdo);
                 $customerInfo = $customer->find('name', $value['id']);
                 $stuffs[$order]['customer_name'] = $customerInfo;
 
