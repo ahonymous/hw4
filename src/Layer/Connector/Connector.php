@@ -13,8 +13,8 @@ class Connector implements ConnectorInterface
      */
     public function connect()
     {
-        require __DIR__ . '/../../../config/autoload.php';
-        return new \PDO('mysql:host='. $config['host'] .';dbname='.$config['db_name'].'', $config['db_user'], $config['db_password']);
+//        require __DIR__ . '/../../../config/autoload.php';
+//        return new \PDO('mysql:host='. $config['host'] .';dbname='.$config['db_name'].'', $config['db_user'], $config['db_password']);
     }
     /**
      * @return null
