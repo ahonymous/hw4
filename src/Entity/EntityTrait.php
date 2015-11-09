@@ -18,10 +18,6 @@ trait EntityTrait
      */
     private $updatedAt;
 
-    /**
-     * @var \DateTime
-     */
-    private $deletedAt;
 
     /**
      * @return \DateTime
@@ -36,7 +32,7 @@ trait EntityTrait
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = $createdAt->format('Y-m-d');
     }
 
     /**
@@ -52,22 +48,7 @@ trait EntityTrait
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = $updatedAt->format('Y-m-d');
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getDeletedAt()
-    {
-        return $this->deletedAt;
-    }
-
-    /**
-     * @param \DateTime $deletedAt
-     */
-    public function setDeletedAt($deletedAt)
-    {
-        $this->deletedAt = $deletedAt;
-    }
 }
