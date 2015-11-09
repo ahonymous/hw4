@@ -23,10 +23,10 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
         return $MockPDO;
     }
 
-
-
-
-    public function testAttributesTable(){
+    /**
+     * @test
+     */
+    public function AttributesTable(){
         $this->assertClassHasAttribute('table','Models\User');
         $this->assertClassHasAttribute('table','Models\Customer');
         $this->assertClassHasAttribute('table','Models\Stuff');
@@ -52,9 +52,26 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider OrderData
+     */
+    public function testRegisterOrder($OrderData){
+        $mockOrder = $this->getMockBuilder('Models\Order')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockOrder->method('registerOrder')
+            ->will($this->returnValue(true));
+        $order_id = $mockOrder->registerOrder($OrderData);
+
+        return $order_id;
+    }
+
+
+    /**
+     * @depends testRegisterOrder
      * @dataProvider orderInfo
      */
-    public function testAddOrderSutuffs($orderInfo){
+    public function testAddOrderSutuffs($orderInfo,$order_id){
         $mockOrder = $this->getMockBuilder('Models\Order')
                           ->disableOriginalConstructor()
                           ->getMock();
@@ -62,20 +79,32 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
         $mockOrder->method('addOrderSutuffs')
             ->will($this->returnValue(true));
 
-        $this->assertTrue($mockOrder->addOrderSutuffs($orderInfo[0],$orderInfo[1]));
+        $this->assertTrue($mockOrder->addOrderSutuffs($orderInfo,$order_id));
+
     }
-
-    
-
 
 
     public function orderInfo(){
         return array(
             [
-                [1,2,3,4,5], 77,
+                [1,2,3,4,5],
             ],
             [
-                [7,14,43,54], 54,
+                [23,24,12,43,65],
+            ],
+            [
+                [12,43,65,98],
+            ],
+        );
+    }
+
+    public function OrderData(){
+        return array(
+            [
+                [1,1,],
+            ],
+            [
+                [1,2,],
             ],
         );
     }

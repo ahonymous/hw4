@@ -21,14 +21,19 @@ class Order implements OrderInterface
     }
 
 
-    public function addRegisterOrder($post){
+    public function registerOrder($post){
         $addOrder = $this->pdo->db->prepare("INSERT INTO `orders` (`customer_id`, user_id, date) VALUES (:c_id, :u_id, NOW())");
         $addOrder->bindValue(':u_id', $post['user_id']);
         $addOrder->bindValue(':c_id', $post['customer_id']);
         $addOrder->execute();
         $order_id = $this->pdo->db->lastInsertId();
         if ($order_id){
-            $this->addOrderSutuffs($post['stuffs'],$order_id);
+            $addOrderSutuffs = $this->addOrderSutuffs($post['stuffs'],$order_id);
+            if ($addOrderSutuffs){
+                return 'Order confirmed';
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

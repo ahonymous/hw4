@@ -13,7 +13,8 @@ use Layer\Connector\Connector;
 
 $db = new Connector();
 
-if (isset($_GET['action'])){
+phpinfo();
+/*if (isset($_GET['action'])){
     
     switch ($_GET['action']){
         case 'users':
@@ -171,7 +172,7 @@ if (isset($_GET['action'])){
 
     $smarty->display('index.tpl');
 
-}
+}*/
 
 
 
