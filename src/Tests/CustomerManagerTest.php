@@ -29,11 +29,16 @@ class CustomerManagerTest extends \PHPUnit_Framework_TestCase
     public function testFindAll()
     {
         $pdoStub = $this->getMockBuilder('\PDO')->disableOriginalConstructor()->getMock();
+
         $statementStub = $this->getMockBuilder('\PDOStatement')->disableOriginalConstructor()->getMock();
-        $statementStub->method('bindValue')->willReturn($statementStub);
-        $statementStub->method('execute')->willReturn($statementStub);
+        $statementStub->method('bindValue')->willReturn(true);
+        $statementStub->method('execute')->willReturn(true);
+
         $pdoStub->method('prepare')->willReturn($statementStub);
+
         $manager = new CustomerManager($pdoStub);
+
+        $this->once()
         $this->assertTrue(is_array($manager->findAll()));
     }
 

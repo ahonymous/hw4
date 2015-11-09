@@ -13,6 +13,10 @@ class CustomerManager extends AbstractManager
 {
     private $connector;
 
+    /**
+     * CustomerManager constructor.
+     * @param \PDO $connector
+     */
     public function __construct(\PDO $connector)
     {
         $this->connector = $connector;
@@ -65,6 +69,11 @@ class CustomerManager extends AbstractManager
 
     }
 
+    /**
+     * @param $id
+     * @param $entity
+     * @return bool
+     */
     public function update($id, $entity)
     {
         parent::update($id, $entity);
