@@ -20,5 +20,5 @@ interface ConnectorInterface
      * @param $db
      * @return mixed
      */
-    public function connectClose($db);
+    public function connectClose();
 }

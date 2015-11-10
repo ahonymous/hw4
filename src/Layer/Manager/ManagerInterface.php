@@ -42,7 +42,7 @@ interface ManagerInterface
      * @param $entityName
      * @return array
      */
-    public function findAll($entityName);
+    public function findAll();
 
     /**
      * Search all entity data in the DB like $criteria rules
